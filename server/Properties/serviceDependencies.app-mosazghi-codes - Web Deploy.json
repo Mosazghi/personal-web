@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "ignored": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:WebApiDatabase",
+      "dynamicId": null
+    },
+    "mssql2": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/app-mosazghi-codes/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsWebApiDatabase_1EE4FA7AB8",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/my-web-serverdbserver/databases/my-web-server_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:WebApiDatabase"
+    }
+  }
+}

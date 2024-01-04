@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .Collapsible .Collapsible__contentInner {
+        @apply xl:p-[0.5em] grid grid-cols-1 md:grid-cols-[repeat(auto-fit,_minmax(400px,_1fr))] gap-[1em];
+    }
+    .Collapsible .Collapsible__trigger {
+        @apply text-white block border-solid mx-3 font-bold border rounded-md my-2 p-[10px] relative;
+
+        &:after {
+            content: "\2B9D";
+            @apply absolute right-2 top-2;
+            display: block;
+            transition: transform 300ms;
+        }
+
+        &.is-open {
+            &:after {
+                transform: rotateZ(180deg);
+            }
+        }
+    }
+}
