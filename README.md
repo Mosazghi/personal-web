@@ -1,5 +1,5 @@
 ## Portfoilo
 
-![Desktop view](/screenshots/_1.png)
-![Creating courses](/screenshots/_3.png)
-![Mobile view](/screenshots/_2.png)
+![Desktop view](/screenshots/1.png)
+![Creating courses](/screenshots/2.png)
+![Mobile view](/screenshots/3.png)
