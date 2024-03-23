@@ -147,7 +147,7 @@ const CreateCourseForm = () => {
             </div>
             <button
                 type="submit"
-                className="bg-gradient-to-t from-gray-400 via-gray-500 to-gray-600 shadow-md border-2 w-full text-white p-1 rounded-lg mt-3"
+                className="bg-gradient-to-t from-secondary via-orange-500 to-orange-700 shadow-md border-2 w-full text-white p-1 rounded-lg mt-3"
             >
                 Create new course
             </button>

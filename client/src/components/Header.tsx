@@ -4,7 +4,7 @@ const Header = () => {
     return (
         <header className="px-10 mb-5 md:mb-10">
             <h1 className="bg-gradient-to-r from-gray-200 via-gray-400 to-gray-600 text-transparent bg-clip-text text-3xl md:text-6xl text-center font-bold py-2">
-                <Link className="hover:underline decoration-slate-500" to="admin/login">
+                <Link className="hover:underline decoration-secondary" to="admin/login">
                     Mosazghi
                 </Link>
                 {" | "} Electrical Engineering, NTNU
