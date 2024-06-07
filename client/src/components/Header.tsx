@@ -7,7 +7,7 @@ const Header = () => {
                 <Link className="hover:underline decoration-secondary" to="admin/login">
                     Mosazghi
                 </Link>
-                {" | "} Electrical Engineering, NTNU
+                <p className="text-3xl">Electrical and Electronics Engineering, NTNU</p>
             </h1>
         </header>
     );
