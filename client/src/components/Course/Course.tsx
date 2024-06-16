@@ -1,3 +1,8 @@
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 export interface CourseProps {
     name: string;
     description: string;
@@ -9,20 +14,37 @@ export interface CourseProps {
 
 const Course = ({ name, description, type, grade, urlLink }: CourseProps) => {
     return (
-        <article className="gap-2 text-start bg-slate-100 rounded-lg px-[1em] py-[0.7em] pb-[0.5em] m-[1em] transition-all duration-300 ease-out items-stretch flex flex-col justify-stretch border-l-[10px] border-solid border-secondary-dark shadow-lg min-w-[302px]">
-            <h3 className="text-2xl font-bold">{name}</h3>
-            <p className="flex flex-1 text-lg">{description}</p>
-            <h4>
-                <strong>Grade: </strong>
-                {grade}
-            </h4>
-            <div className="flex flex-row flex-nowrap justify-between ">
-                <a href={urlLink} target="_blank" className="underline decoration-gray-500">
-                    Read more
-                </a>
+        <Card
+            sx={{
+                maxWidth: "560px",
+                m: { xs: "auto", sm: "0.2em" },
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                borderLeft: "10px solid #326fa8",
+                boxShadow: 3,
+            }}
+        >
+            <CardContent>
+                <Typography variant="h5" gutterBottom sx={{ fontStyle: "italic" }}>
+                    {name}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    {description}
+                </Typography>
+                <Typography variant="body1">
+                    <strong>Grade:</strong> {grade}
+                </Typography>
+            </CardContent>
+            <CardActions sx={{ display: "flex", justifyContent: "space-between", pt: 0 }}>
+                <Button size="small" href={urlLink} target="_blank">
+                    {" "}
+                    Read more{" "}
+                </Button>
                 <abbr title={type === "O" ? "Obligatory course" : "Additional course"}>{type}</abbr>
-            </div>
-        </article>
+            </CardActions>
+        </Card>
     );
 };
 

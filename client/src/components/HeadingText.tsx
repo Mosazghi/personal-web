@@ -1,12 +1,27 @@
-type HeadingTextProps = {
+import { Typography } from "@mui/material";
+
+interface HeadingTextProps {
     text: string;
-};
+}
 
 const HeadingText = ({ text }: HeadingTextProps) => {
     return (
-        <h1 className="underline decoration-secondary-dark bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 text-transparent bg-clip-text text-2xl md:text-5xl my-5 text-center font-bold py-2">
+        <Typography
+            variant="h2"
+            sx={{
+                color: "white",
+                textDecoration: "underline",
+                textDecorationColor: "lightsteelblue",
+                fontSize: { xs: "1.65rem", md: "2.5rem" },
+                fontWeight: "bold",
+                fontStyle: "italic",
+                mt: 8,
+                mb: 4,
+                textAlign: { md: "center" },
+            }}
+        >
             {text}
-        </h1>
+        </Typography>
     );
 };
 export default HeadingText;

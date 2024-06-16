@@ -1,9 +1,13 @@
+import { CircularProgress, Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
 const LoadingCourses = () => {
     return (
-        <div className="flex justify-center items-center mt-10 mb-5 md:mt-15">
-            <div className=" text-2xl text-white">Fetching courses </div>
-            <div className="animate-spin rounded-full h-6 w-6 ms-5 border-t-2 border-b-2"></div>
-        </div>
+        <Stack sx={{ color: "grey.400" }} spacing={2} direction="row" justifyContent="center" alignItems="center">
+            <Typography variant="h6" color={"inherit"}>
+                Loading courses
+            </Typography>
+            <CircularProgress size={18} color="inherit" />
+        </Stack>
     );
 };
 

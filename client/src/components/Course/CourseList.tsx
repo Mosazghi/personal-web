@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import Collapsible from "react-collapsible";
 import getApiPath from "../../utils/getApiPath";
 import groupBy from "../../utils/groupBy";
 import LoadingCourses from "../LoadingCourses";
 import Course, { CourseProps } from "./Course";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Box from "@mui/material/Box";
 
 type GroupedCourses = Record<string, CourseProps[]>;
 
@@ -11,14 +16,13 @@ const CourseList = () => {
     const [courses, setCourses] = useState<GroupedCourses>({});
     const [loading, setLoading] = useState(true);
 
-    const urlWithProxy = getApiPath() + import.meta.env.VITE_GET_COURSES_URL;
+    const urlWithProxy = getApiPath() + import.meta.env.VITE_COURSES_URL;
     useEffect(() => {
         let ignore = false;
 
         async function getCourses() {
             setLoading(true);
             try {
-                console.log(getApiPath(), import.meta.env.VITE_GET_COURSES_URL)
                 const res = await fetch(urlWithProxy);
                 const fetchedCourses: CourseProps[] = await res.json();
                 console.log(fetchedCourses);
@@ -47,15 +51,51 @@ const CourseList = () => {
     }
 
     return (
-        <section>
-            {Object.entries(courses).map(([semester, courseList], i) => (
-                <Collapsible key={semester} tabIndex={i} trigger={`${i + 1}. Semester`}>
-                    {courseList.map((course, j) => (
-                        <Course key={j} {...course} />
-                    ))}
-                </Collapsible>
+        <Box>
+            {Object.entries(courses).map(([_, courseList], i) => (
+                <Accordion
+                    key={i}
+                    sx={{
+                        backgroundColor: "inherit",
+                        my: "1em",
+                        boxShadow: "none",
+                        px: "0",
+                    }}
+                    slotProps={{ transition: { unmountOnExit: true } }}
+                    disableGutters
+                >
+                    <AccordionSummary
+                        expandIcon={<ArrowDropDownIcon sx={{ color: "white" }} />}
+                        aria-controls={`panel${i}-content`}
+                        id={`panel${i}-header`}
+                        sx={{
+                            color: "white",
+                            border: "1px solid #fff",
+                            borderRadius: "10px",
+                            m: "0",
+                            mb: { xs: "1em", sm: "0" },
+                        }}
+                    >
+                        <Typography>{`${i + 1}. Semester`}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: {
+                                xs: "repeat(1, minmax(0, 1fr))",
+                                md: "repeat(auto-fit, minmax(400px, 1fr))",
+                            },
+                            gap: "1rem",
+                            p: { xs: "0", sm: "1rem" },
+                        }}
+                    >
+                        {courseList.map((course, j) => (
+                            <Course key={j} {...course} />
+                        ))}
+                    </AccordionDetails>
+                </Accordion>
             ))}
-        </section>
+        </Box>
     );
 };
 

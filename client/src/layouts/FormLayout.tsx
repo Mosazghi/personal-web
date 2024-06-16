@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Box } from "@mui/material";
 
 interface LayoutProps {
     children: ReactNode;
@@ -6,9 +7,20 @@ interface LayoutProps {
 
 const FormLayout = ({ children }: LayoutProps) => {
     return (
-        <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-b from-gray-100 via-gray-300 to-gray-400 bg-clip-text text-transparent">
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+                background: "linear-gradient(to bottom, #f7fafc, #e2e8f0, #cbd5e0)",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+            }}
+        >
             {children}
-        </div>
+        </Box>
     );
 };
 
