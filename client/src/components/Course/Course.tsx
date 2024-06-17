@@ -16,7 +16,6 @@ const Course = ({ name, description, type, grade, urlLink }: CourseProps) => {
     return (
         <Card
             sx={{
-                maxWidth: "560px",
                 m: { xs: "auto", sm: "0.2em" },
                 width: "100%",
                 display: "flex",

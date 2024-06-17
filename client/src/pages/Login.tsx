@@ -4,12 +4,11 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { blueGrey } from "@mui/material/colors";
-import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import cookies from "../utils/cookies";
 import getApiPath from "../utils/getApiPath";
-
+import { request } from "../utils/fetch";
 const inputStyles = {
     "& .MuiOutlinedInput-root": {
         "& fieldset": {
@@ -42,21 +41,22 @@ export default function Login() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const config = {
-            method: "post",
             url: authUrl,
+            method: "POST",
             data: {
                 username: data.get("username"),
                 password: data.get("password"),
             },
         };
-        axios(config)
-            .then((res) => {
-                cookies.set("TOKEN", res.data.token, {
-                    path: "/",
-                });
+
+        request(config)
+            .then((data) => {
+                console.log("data", data);
+                cookies.set("TOKEN", data.token, { path: "/" });
                 navigate("/admin/dashboard");
             })
             .catch(() => {
+                console.log("error");
                 return new Error();
             });
     };

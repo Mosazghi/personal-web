@@ -11,40 +11,26 @@ import groupBy from "../../utils/groupBy";
 import LoadingStatus from "../LoadingStatus";
 import Course, { CourseProps } from "./Course";
 type GroupedCourses = Record<string, CourseProps[]>;
+import { request } from "../../utils/fetch";
 
 const CourseList = () => {
     const [courses, setCourses] = useState<GroupedCourses>({});
     const [loading, setLoading] = useState(true);
 
-    const urlWithProxy = getApiPath() + import.meta.env.VITE_COURSES_URL;
     useEffect(() => {
-        let ignore = false;
-
-        async function getCourses() {
-            setLoading(true);
-            try {
-                const res = await fetch(urlWithProxy);
-                const fetchedCourses: CourseProps[] = await res.json();
-                console.log(fetchedCourses);
-                const sortedCourses = groupBy(fetchedCourses, "semester");
-                if (!ignore) {
-                    setCourses(sortedCourses);
-                }
-            } catch (error) {
-                console.error("Failed to fetch courses:", error);
-            } finally {
-                if (!ignore) {
-                    setLoading(false);
-                }
-            }
-        }
-
-        getCourses();
-
-        return () => {
-            ignore = true;
+        const config = {
+            method: "GET",
+            url: getApiPath() + import.meta.env.VITE_COURSES_URL,
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        setLoading(true);
+        request(config)
+            .then((response) => response)
+            .then((data) => {
+                const sortedCourses = groupBy(data, "semester");
+                setCourses(sortedCourses);
+                setLoading(false);
+            });
     }, []);
 
     if (loading) {

@@ -3,6 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import cookies from "../../utils/cookies";
 import getApiPath from "../../utils/getApiPath";
 import Button from "../Button";
+import { request } from "../../utils/fetch";
 
 export interface Course {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,21 +47,20 @@ const CreateCourseForm = ({ onSuccess, onError, course }: CourseFormProps) => {
             return;
         }
 
-        const apiUrl = getApiPath() + import.meta.env.VITE_COURSES_URL + (course ? `/${course.id}` : "");
+        const config = {
+            method: course ? "PUT" : "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${cookies.get("TOKEN")}`,
+            },
+            url: getApiPath() + import.meta.env.VITE_COURSES_URL + (course ? `/${course.id}` : ""),
+            data: formData,
+        };
 
         try {
-            const response = await fetch(apiUrl, {
-                method: course ? "PUT" : "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${cookies.get("TOKEN")}`,
-                },
-                body: JSON.stringify(formData),
-            });
+            const data = await request(config);
 
-            const data = await response.json();
-
-            if (response.ok) {
+            if (data) {
                 onSuccess();
                 if (!course) {
                     setFormData(defualtCourse);

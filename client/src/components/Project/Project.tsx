@@ -6,7 +6,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import { fetchData } from "../../utils/fetch";
+import { request } from "../../utils/fetch";
 import ButtonBase from "@mui/material/ButtonBase";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { IconButton } from "@mui/material";
@@ -23,18 +23,19 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
     const [techLogos, setTechLogos] = useState<Record<string, string>>({});
 
     useEffect(() => {
-        const apiUrl = "https://api.jsonbin.io/v3/b/66706c8ce41b4d34e404a7af";
-        const apiKey = import.meta.env.VITE_ABOUT_ME_API_KEY;
-        const headers = {
-            "X-Master-Key": apiKey,
-            "X-Bin-Meta": "false",
+        const config = {
+            method: "GET",
+            url: "https://api.jsonbin.io/v3/b/66706c8ce41b4d34e404a7af",
+            headers: {
+                "X-Master-Key": import.meta.env.VITE_ABOUT_ME_API_KEY,
+                "X-Bin-Meta": "false",
+            },
         };
-        fetchData({ url: apiUrl, headers })
+        request(config)
             .then((response) => response)
-            .then((data) => {
-                setTechLogos(data);
-            });
+            .then((data) => setTechLogos(data));
     }, []);
+
     return (
         <Card sx={{ width: "100%" }}>
             <ButtonBase

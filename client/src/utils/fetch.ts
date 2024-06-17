@@ -1,36 +1,36 @@
-import cookies from "./cookies";
-
-interface FetchDataProps {
+interface RequestProps {
     url: string;
+    method: string | "GET" | "POST" | "DELETE" | "PUT";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data?: Record<string, any>;
     headers?: Record<string, string>;
 }
-const fetchData = async ({ url, headers }: FetchDataProps) => {
-    const config = { method: "GET", headers: { ...headers } };
-    try {
-        const response = await fetch(url, config);
-        const data = await response.json();
-        return data;
-    } catch (e) {
-        console.error("Failed to fetch data", e);
-        return [];
-    }
-};
 
-const deleteData = async (url: string) => {
-    console.log("trying to delte..", url);
+const request = async ({ url, method, data, headers }: RequestProps) => {
+    const defaultHeaders = {
+        "Content-Type": "application/json",
+    };
+
     try {
         const response = await fetch(url, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${cookies.get("TOKEN")}`,
-            },
+            method,
+            body: data ? JSON.stringify(data) : undefined,
+            headers: { ...defaultHeaders, ...headers },
         });
-        console.log("response", response);
-        return response.ok;
+
+        if (response.ok) {
+            if (method === "DELETE") {
+                return true;
+            } else {
+                return await response.json();
+            }
+        } else {
+            throw new Error(`Failed to ${method} data`);
+        }
     } catch (e) {
-        console.error("Failed to delete data", e);
+        console.error(`Failed to ${method} data`, e);
         return false;
     }
 };
 
-export { fetchData, deleteData };
+export { request };

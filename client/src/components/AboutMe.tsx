@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
-import { fetchData } from "../utils/fetch";
+import { request } from "../utils/fetch";
 const AboutMe = () => {
     const [aboutInfo, setAboutInfo] = useState("");
 
     useEffect(() => {
-        const apiUrl = "https://api.jsonbin.io/v3/b/65948ae8dc746540188c2440";
-        const apiKey = import.meta.env.VITE_ABOUT_ME_API_KEY;
-        const headers = {
-            "X-Master-Key": apiKey,
-            "X-Bin-Meta": "false",
+        const config = {
+            method: "GET",
+            url: "https://api.jsonbin.io/v3/b/65948ae8dc746540188c2440",
+            headers: {
+                "X-Master-Key": import.meta.env.VITE_ABOUT_ME_API_KEY,
+                "X-Bin-Meta": "false",
+            },
         };
-        fetchData({ url: apiUrl, headers })
+        request(config)
             .then((response) => response)
             .then((data) => setAboutInfo(data.text));
     }, []);

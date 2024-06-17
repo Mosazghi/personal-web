@@ -5,9 +5,10 @@ import Button from "../Button";
 import cookies from "../../utils/cookies";
 import TechStackInput from "./TechStackInput";
 import { ProjectProps } from "./Project";
+import { request } from "../../utils/fetch";
 export interface Project {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any; // Allow accessing properties with strings
+    [key: string]: any;
     id: number;
     name: string;
     description: string;
@@ -42,21 +43,25 @@ export default function CreateProjectForm({ onSuccess, onError, project }: Proje
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-        const apiUrl = getApiPath() + import.meta.env.VITE_PROJECTS_URL + (project ? `/${project.id}` : "");
+        if (project && JSON.stringify(project) === JSON.stringify(formData)) {
+            alert("No changes were made.");
+            return;
+        }
+
+        const config = {
+            method: project ? "PUT" : "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${cookies.get("TOKEN")}`,
+            },
+            url: getApiPath() + import.meta.env.VITE_PROJECTS_URL + (project ? `/${project.id}` : ""),
+            data: formData,
+        };
 
         try {
-            const response = await fetch(apiUrl, {
-                method: project ? "PUT" : "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${cookies.get("TOKEN")}`,
-                },
-                body: JSON.stringify(formData),
-            });
+            const data = await request(config);
 
-            const data = await response.json();
-
-            if (response.ok) {
+            if (data) {
                 onSuccess();
                 if (!project) {
                     setFormData(defaultProject);

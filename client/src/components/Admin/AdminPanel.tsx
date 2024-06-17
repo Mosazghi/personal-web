@@ -1,13 +1,14 @@
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import cookies from "../../utils/cookies";
-import { deleteData, fetchData } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
 import Button from "../Button";
 import CreateCourseForm, { Course } from "../Course/CourseForm";
 import CreateProjectForm, { Project } from "../Project/ProjectForm";
 import DataTable from "./Table";
 import { courseColumns, projectColumns } from "./columnsData";
+import { request } from "../../utils/fetch";
+
 const AdminPanel = () => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
@@ -17,35 +18,55 @@ const AdminPanel = () => {
     const [editingProject, setEditingProject] = useState<Project | null>(null);
 
     const fetchCourses = useCallback(async () => {
-        const apiUrl = getApiPath() + import.meta.env.VITE_COURSES_URL;
-
-        const headers = {
-            Authorization: `Bearer ${cookies.get("TOKEN")}`,
+        const config = {
+            method: "GET",
+            url: getApiPath() + import.meta.env.VITE_COURSES_URL,
+            headers: {
+                Authorization: `Bearer ${cookies.get("TOKEN")}`,
+            },
         };
-        const data = await fetchData({ url: apiUrl, headers });
+        const data = await request(config);
+
         setCourses(data);
     }, []);
 
     const fetchProjects = useCallback(async () => {
-        const apiUrl = getApiPath() + import.meta.env.VITE_PROJECTS_URL;
-        const headers = {
-            Authorization: `Bearer ${cookies.get("TOKEN")}`,
+        const config = {
+            method: "GET",
+            url: getApiPath() + import.meta.env.VITE_PROJECTS_URL,
+            headers: {
+                Authorization: `Bearer ${cookies.get("TOKEN")}`,
+            },
         };
-        const data = await fetchData({ url: apiUrl, headers });
+        const data = await request(config);
         setProjects(data);
     }, []);
 
     const handleDeleteCourse = useCallback(async (id: number) => {
-        const apiUrl = getApiPath() + import.meta.env.VITE_COURSES_URL + `/${id}`;
-        const success = await deleteData(apiUrl);
+        const config = {
+            method: "DELETE",
+            url: getApiPath() + import.meta.env.VITE_COURSES_URL + `/${id}`,
+            headers: {
+                Authorization: `Bearer ${cookies.get("TOKEN")}`,
+            },
+        };
+        const success = await request(config);
+
         if (success) {
             setCourses((prevCourses) => prevCourses.filter((course) => course.id !== id));
         }
     }, []);
 
     const handleDeleteProject = useCallback(async (id: number) => {
-        const apiUrl = getApiPath() + import.meta.env.VITE_PROJECTS_URL + `/${id}`;
-        const success = await deleteData(apiUrl);
+        const config = {
+            method: "DELETE",
+            url: getApiPath() + import.meta.env.VITE_PROJECTS_URL + `/${id}`,
+            headers: {
+                Authorization: `Bearer ${cookies.get("TOKEN")}`,
+            },
+        };
+
+        const success = await request(config);
         if (success) {
             setProjects((prevProjects) => prevProjects.filter((project) => project.id !== id));
         }
@@ -74,7 +95,12 @@ const AdminPanel = () => {
     const MemoizedData = (data: (Course | Project)[]) => useMemo(() => data, [data]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleOpenDialog = (setOpenDialogFunction: any) => () => setOpenDialogFunction(true);
+    const handleOpenDialog = (setOpenDialogFunction: any) => () => {
+        setOpenDialogFunction(true);
+
+        if (editingCourse) setEditingCourse(null);
+        if (editingProject) setEditingProject(null);
+    };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCloseDialog = (setOpenDialogFunction: any) => () => setOpenDialogFunction(false);
 

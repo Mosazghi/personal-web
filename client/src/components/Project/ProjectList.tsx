@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import getApiPath from "../../utils/getApiPath";
 import LoadingStatus from "../LoadingStatus";
 import Project, { ProjectProps } from "./Project";
+import { request } from "../../utils/fetch";
 
 const NoProjects = () => {
     return (
@@ -26,32 +27,19 @@ const ProjectList = () => {
     const [projects, setProjects] = useState<ProjectProps[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const urlWithProxy = getApiPath() + import.meta.env.VITE_PROJECTS_URL;
     useEffect(() => {
-        let ignore = false;
-
-        async function getProjects() {
-            setLoading(true);
-            try {
-                const res = await fetch(urlWithProxy);
-                const fetchedCourses = await res.json();
-                console.log(fetchedCourses);
-                setProjects(fetchedCourses);
-            } catch (error) {
-                console.error("Failed to fetch projects:", error);
-            } finally {
-                if (!ignore) {
-                    setLoading(false);
-                }
-            }
-        }
-
-        getProjects();
-
-        return () => {
-            ignore = true;
+        const config = {
+            method: "GET",
+            url: getApiPath() + import.meta.env.VITE_PROJECTS_URL,
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        setLoading(true);
+        request(config)
+            .then((response) => response)
+            .then((data) => {
+                setProjects(data);
+                setLoading(false);
+            });
     }, []);
 
     if (loading) {
