@@ -12,11 +12,13 @@ const request = async ({ url, method, data, headers }: RequestProps) => {
     };
 
     try {
+        console.log("trying to fetch with", { url, method, data, headers });
         const response = await fetch(url, {
             method,
             body: data ? JSON.stringify(data) : undefined,
             headers: { ...defaultHeaders, ...headers },
         });
+        console.log("response", response);
 
         if (response.ok) {
             if (method === "DELETE") {
