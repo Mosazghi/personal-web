@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import HeadingText from "../components/HeadingText";
 import ProjectList from "../components/Project/ProjectList";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 
 function Home() {
     return (

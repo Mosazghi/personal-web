@@ -1,23 +1,9 @@
-import { Box, Grid, Typography, Link } from "@mui/material";
-import Project, { ProjectProps } from "./Project";
+import { Box, Grid, Link, Typography } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
-
-const testProjects: ProjectProps[] = [
-    {
-        name: "my_t",
-        description: "A custom serial terminal for interfacing with microcontrollers.",
-        showcaseLink: "https://i.imgur.com/mnL3xYa.gif",
-        repositoryLink: "",
-        language: ["C++", "Qt"],
-    },
-    {
-        name: "my_t",
-        description: "A custom serial terminal for interfacing with microcontrollers.",
-        showcaseLink: "https://i.imgur.com/mnL3xYa.gif",
-        repositoryLink: "https://github.com/",
-        language: ["C++", "Qt"],
-    },
-];
+import { useEffect, useState } from "react";
+import getApiPath from "../../utils/getApiPath";
+import LoadingStatus from "../LoadingStatus";
+import Project, { ProjectProps } from "./Project";
 
 const NoProjects = () => {
     return (
@@ -37,13 +23,48 @@ const NoProjects = () => {
 };
 
 const ProjectList = () => {
-    if (testProjects.length === 0) {
+    const [projects, setProjects] = useState<ProjectProps[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const urlWithProxy = getApiPath() + import.meta.env.VITE_PROJECTS_URL;
+    useEffect(() => {
+        let ignore = false;
+
+        async function getProjects() {
+            setLoading(true);
+            try {
+                const res = await fetch(urlWithProxy);
+                const fetchedCourses = await res.json();
+                console.log(fetchedCourses);
+                setProjects(fetchedCourses);
+            } catch (error) {
+                console.error("Failed to fetch projects:", error);
+            } finally {
+                if (!ignore) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        getProjects();
+
+        return () => {
+            ignore = true;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    if (loading) {
+        return <LoadingStatus message="Loading projects" />;
+    }
+
+    if (projects.length === 0) {
         return <NoProjects />;
     }
     return (
-        <Box py={3}>
+        <Box component="section" py={3}>
             <Grid container spacing={2} alignItems="center" justifyContent="center">
-                {testProjects.map((project, index) => (
+                {projects.map((project, index: number) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                         <Project {...project} />
                     </Grid>

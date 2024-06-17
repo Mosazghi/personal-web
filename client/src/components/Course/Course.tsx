@@ -1,7 +1,7 @@
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
+import Button from "../Button";
 import Typography from "@mui/material/Typography";
 export interface CourseProps {
     name: string;
@@ -38,10 +38,7 @@ const Course = ({ name, description, type, grade, urlLink }: CourseProps) => {
                 </Typography>
             </CardContent>
             <CardActions sx={{ display: "flex", justifyContent: "space-between", pt: 0 }}>
-                <Button size="small" href={urlLink} target="_blank">
-                    {" "}
-                    Read more{" "}
-                </Button>
+                <Button size="small" link={urlLink} text="Read more" />
                 <abbr title={type === "O" ? "Obligatory course" : "Additional course"}>{type}</abbr>
             </CardActions>
         </Card>

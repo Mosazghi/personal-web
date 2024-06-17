@@ -1,8 +1,12 @@
-import { useState, useEffect, FormEvent } from "react";
-import { Box, Button, TextField, MenuItem, Select, InputLabel, FormControl, ListSubheader } from "@mui/material";
-import getApiPath from "../../utils/getApiPath";
+import { Box, FormControl, InputLabel, ListSubheader, MenuItem, Select, TextField } from "@mui/material";
+import { FormEvent, useEffect, useState } from "react";
 import cookies from "../../utils/cookies";
-interface Course {
+import getApiPath from "../../utils/getApiPath";
+import Button from "../Button";
+
+export interface Course {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
     id: number;
     name: string;
     semester: string;
@@ -26,7 +30,7 @@ const defualtCourse = {
     urlLink: "",
     type: "O",
 };
-const CreateCourseForm: React.FC<CourseFormProps> = ({ onSuccess, onError, course }) => {
+const CreateCourseForm = ({ onSuccess, onError, course }: CourseFormProps) => {
     const [formData, setFormData] = useState(defualtCourse);
 
     useEffect(() => {
@@ -37,7 +41,6 @@ const CreateCourseForm: React.FC<CourseFormProps> = ({ onSuccess, onError, cours
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        // check if the fileds havent changed
         if (course && JSON.stringify(course) === JSON.stringify(formData)) {
             alert("No changes were made.");
             return;
@@ -70,6 +73,7 @@ const CreateCourseForm: React.FC<CourseFormProps> = ({ onSuccess, onError, cours
         }
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setFormData({
@@ -80,7 +84,7 @@ const CreateCourseForm: React.FC<CourseFormProps> = ({ onSuccess, onError, cours
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField label="Name" name="name" value={formData.name} onChange={handleChange} required />
+            <TextField label="Name" name="name" sx={{ mt: 1 }} value={formData.name} onChange={handleChange} required />
             <FormControl required>
                 <InputLabel>Semester</InputLabel>
                 <Select name="semester" value={formData.semester} onChange={handleChange}>
@@ -126,24 +130,7 @@ const CreateCourseForm: React.FC<CourseFormProps> = ({ onSuccess, onError, cours
                     <MenuItem value="E">E</MenuItem>
                 </Select>
             </FormControl>
-            <Button
-                color="success"
-                variant="outlined"
-                sx={{
-                    mt: 3,
-                    mb: 2,
-                    border: "2px solid black",
-                    color: "black",
-                    borderColor: "black",
-                    "&:hover": {
-                        borderColor: "black",
-                        color: "black",
-                    },
-                }}
-                type="submit"
-            >
-                {course ? "Update Course" : "Create New Course"}
-            </Button>
+            <Button type="submit" text={course ? "Update Course " : "Create New Course"} />
         </Box>
     );
 };

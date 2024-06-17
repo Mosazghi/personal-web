@@ -4,6 +4,7 @@ import AdminPanel from "../components/Admin/AdminPanel";
 import cookies from "../utils/cookies";
 import LogoutIcon from "@mui/icons-material/Logout";
 import IconButton from "@mui/material/IconButton";
+import HomeIcon from "@mui/icons-material/Home";
 function Dashboard() {
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -21,9 +22,14 @@ function Dashboard() {
                 >
                     Dashboard
                 </Typography>
-                <IconButton onClick={handleLogout} color="primary">
-                    <LogoutIcon />
-                </IconButton>
+                <Box minWidth={"80px"}>
+                    <IconButton href="/" color="primary">
+                        <HomeIcon sx={{ color: "whitesmoke" }} />
+                    </IconButton>
+                    <IconButton onClick={handleLogout} color="primary">
+                        <LogoutIcon sx={{ color: "whitesmoke" }} />
+                    </IconButton>
+                </Box>
             </Box>
             <AdminPanel />
         </Box>

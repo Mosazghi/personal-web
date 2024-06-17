@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
-
+import { fetchData } from "../utils/fetch";
 const AboutMe = () => {
     const [aboutInfo, setAboutInfo] = useState("");
+
     useEffect(() => {
+        const apiUrl = "https://api.jsonbin.io/v3/b/65948ae8dc746540188c2440";
         const apiKey = import.meta.env.VITE_ABOUT_ME_API_KEY;
-        fetch("https://api.jsonbin.io/v3/b/65948ae8dc746540188c2440", {
-            headers: {
-                "X-Master-Key": apiKey,
-                "X-Bin-Meta": "false",
-            },
-        })
-            .then((response) => response.json())
+        const headers = {
+            "X-Master-Key": apiKey,
+            "X-Bin-Meta": "false",
+        };
+        fetchData({ url: apiUrl, headers })
+            .then((response) => response)
             .then((data) => setAboutInfo(data.text));
     }, []);
 

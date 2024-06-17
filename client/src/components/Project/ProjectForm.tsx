@@ -1,13 +1,20 @@
 import { useState, useEffect, FormEvent } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import getApiPath from "../../utils/getApiPath";
+import Button from "../Button";
 import cookies from "../../utils/cookies";
-interface Project {
+import TechStackInput from "./TechStackInput";
+import { ProjectProps } from "./Project";
+export interface Project {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any; // Allow accessing properties with strings
     id: number;
     name: string;
     description: string;
-    link: string;
-    technology: string;
+    showcaseLink: string;
+    repositoryLink: string;
+    previewLink: string;
+    techStack: string[];
 }
 
 interface ProjectFormProps {
@@ -15,14 +22,16 @@ interface ProjectFormProps {
     onError: (message: string) => void;
     project?: Project | null;
 }
-
-const CreateProjectForm: React.FC<ProjectFormProps> = ({ onSuccess, onError, project }) => {
-    const [formData, setFormData] = useState({
-        name: "",
-        description: "",
-        link: "",
-        technology: "",
-    });
+const defaultProject = {
+    name: "",
+    description: "",
+    showcaseLink: "",
+    repositoryLink: "",
+    previewLink: "",
+    techStack: [],
+};
+export default function CreateProjectForm({ onSuccess, onError, project }: ProjectFormProps) {
+    const [formData, setFormData] = useState<ProjectProps>(defaultProject);
 
     useEffect(() => {
         if (project) {
@@ -33,7 +42,7 @@ const CreateProjectForm: React.FC<ProjectFormProps> = ({ onSuccess, onError, pro
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-        const apiUrl = getApiPath();
+        const apiUrl = getApiPath() + import.meta.env.VITE_PROJECTS_URL + (project ? `/${project.id}` : "");
 
         try {
             const response = await fetch(apiUrl, {
@@ -50,12 +59,7 @@ const CreateProjectForm: React.FC<ProjectFormProps> = ({ onSuccess, onError, pro
             if (response.ok) {
                 onSuccess();
                 if (!project) {
-                    setFormData({
-                        name: "",
-                        description: "",
-                        link: "",
-                        technology: "",
-                    });
+                    setFormData(defaultProject);
                 }
             } else {
                 onError(`Error submitting form:\n${data.errors[Object.keys(data.errors)[0]]}`);
@@ -75,7 +79,14 @@ const CreateProjectForm: React.FC<ProjectFormProps> = ({ onSuccess, onError, pro
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField label="Name" name="name" value={formData.name} onChange={handleChange} required />
+            <TextField
+                label="Project name"
+                name="name"
+                sx={{ mt: 1 }}
+                value={formData.name}
+                onChange={handleChange}
+                required
+            />
             <TextField
                 label="Description"
                 name="description"
@@ -85,34 +96,32 @@ const CreateProjectForm: React.FC<ProjectFormProps> = ({ onSuccess, onError, pro
                 multiline
                 rows={4}
             />
-            <TextField label="Link" name="link" value={formData.link} onChange={handleChange} required />
             <TextField
-                label="Technology"
-                name="technology"
-                value={formData.technology}
+                label="Repository link"
+                name="repositoryLink"
+                value={formData.repositoryLink}
                 onChange={handleChange}
                 required
             />
-            <Button
-                color="success"
-                variant="outlined"
-                sx={{
-                    mt: 3,
-                    mb: 2,
-                    border: "2px solid black",
-                    color: "black",
-                    borderColor: "black",
-                    "&:hover": {
-                        borderColor: "black",
-                        color: "black",
-                    },
-                }}
-                type="submit"
-            >
-                {project ? "Update Project" : "Create New Project"}
-            </Button>
+            <TextField
+                label="Preview link"
+                name="previewLink"
+                value={formData.previewLink}
+                onChange={handleChange}
+                required
+            />
+            <TextField
+                label="Showcase link"
+                name="showcaseLink"
+                value={formData.showcaseLink}
+                onChange={handleChange}
+                required
+            />
+            <TechStackInput
+                techStacks={formData.techStack}
+                setTechStacks={(newTechStack: string[]) => setFormData({ ...formData, techStack: newTechStack })}
+            />
+            <Button type="submit" text={project ? "Update Project" : "Create New Project"} />
         </Box>
     );
-};
-
-export default CreateProjectForm;
+}

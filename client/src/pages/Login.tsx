@@ -1,15 +1,14 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import getApiPath from "../utils/getApiPath";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { blueGrey } from "@mui/material/colors";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-import { Navigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import { blueGrey } from "@mui/material/colors";
+import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 import cookies from "../utils/cookies";
+import getApiPath from "../utils/getApiPath";
 
 const inputStyles = {
     "& .MuiOutlinedInput-root": {
@@ -31,11 +30,12 @@ const inputStyles = {
     },
 };
 export default function Login() {
+    const navigate = useNavigate();
+
     if (cookies.get("TOKEN")) {
         return <Navigate to="/admin/dashboard" />;
     }
 
-    const navigate = useNavigate();
     const authUrl = getApiPath() + import.meta.env.VITE_ADMIN_LOGIN_URL;
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -97,7 +97,6 @@ export default function Login() {
                         <TextField
                             variant="outlined"
                             type="text"
-                            id="navn"
                             name="username"
                             placeholder="username"
                             fullWidth
@@ -105,14 +104,13 @@ export default function Login() {
                             sx={inputStyles}
                         />
                     </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }} mb={3}>
                         <Typography variant="body1" sx={{ py: 1 }}>
                             Password
                         </Typography>
                         <TextField
                             variant="outlined"
                             type="password"
-                            id="pass"
                             name="password"
                             placeholder="password"
                             fullWidth
@@ -120,27 +118,11 @@ export default function Login() {
                             sx={inputStyles}
                         />
                     </Box>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        color="success"
-                        variant="outlined"
-                        sx={{
-                            mt: 3,
-                            mb: 2,
-                            border: "2px solid white",
-                            color: "white",
-                            borderColor: "white",
-                            "&:hover": {
-                                borderColor: "white",
-                                color: "white",
-                            },
-                        }}
-                    >
-                        Sign In
-                    </Button>
-                    <Link href="/" variant="body1" textAlign={"end"} underline="hover">
-                        <Typography color={blueGrey[200]}>Return to portfolio</Typography>
+                    <Button type="submit" fullWidth darkMode text="Sign in" />
+                    <Link href="/" variant="body1" textAlign={"end"} underline="none">
+                        <Typography color={blueGrey[200]} mt={2}>
+                            Return to portfolio
+                        </Typography>
                     </Link>
                 </Box>
             </Box>

@@ -2,38 +2,80 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
+import Box from "@mui/material/Box";
+import { useEffect, useState } from "react";
+import { fetchData } from "../../utils/fetch";
+import ButtonBase from "@mui/material/ButtonBase";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { IconButton } from "@mui/material";
 export interface ProjectProps {
     name: string;
     description: string;
     showcaseLink: string;
     repositoryLink: string;
-    language: string[];
+    previewLink: string;
+    techStack: string[];
 }
 
-const Project = ({ name, description, showcaseLink, language, repositoryLink }: ProjectProps) => {
+const Project = ({ name, description, showcaseLink, techStack, previewLink, repositoryLink }: ProjectProps) => {
+    const [techLogos, setTechLogos] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        const apiUrl = "https://api.jsonbin.io/v3/b/66706c8ce41b4d34e404a7af";
+        const apiKey = import.meta.env.VITE_ABOUT_ME_API_KEY;
+        const headers = {
+            "X-Master-Key": apiKey,
+            "X-Bin-Meta": "false",
+        };
+        fetchData({ url: apiUrl, headers })
+            .then((response) => response)
+            .then((data) => {
+                setTechLogos(data);
+            });
+    }, []);
     return (
-        <Card sx={{ maxWidth: 350 }}>
-            <CardMedia component="img" alt="green iguana" height="200" image={showcaseLink} />
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    {name}
-                </Typography>
+        <Card sx={{ width: "100%" }}>
+            <ButtonBase
+                sx={{
+                    width: "100%",
+                    "&:hover": { backgroundColor: "black" },
+                }}
+                onClick={() => window.open(previewLink)}
+            >
+                <CardMedia
+                    component="img"
+                    alt={name}
+                    height="200"
+                    sx={{
+                        //dim the image when hovered
+                        "&:hover": { opacity: 0.5 },
+                    }}
+                    image={showcaseLink}
+                />
+            </ButtonBase>
+            <CardContent sx={{ pt: 1 }}>
+                <Stack direction={"row"} alignItems={"center"} alignContent={"center"}>
+                    <Typography gutterBottom variant="h5" mb={0}>
+                        {name}
+                    </Typography>
+                    <IconButton href={repositoryLink} target="_blank" aria-label="open repository">
+                        <ArrowOutwardIcon sx={{ color: "black" }} fontSize="medium" />
+                    </IconButton>
+                </Stack>
                 <Typography variant="body2" color="text.secondary">
                     {description}
                 </Typography>
-                language:{" "}
-                {language.map((lang, i) => (
-                    <span key={i}>{lang}</span>
-                ))}
             </CardContent>
             <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small" href={repositoryLink} target="_blank">
-                    Learn More
-                </Button>
+                <Stack px={1} gap={1} direction={"row"}>
+                    {techStack.map((tech, i) => (
+                        <Box component="span" key={i} sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                            <img src={techLogos[tech]} alt={tech} style={{ height: 21, width: 21 }} />
+                        </Box>
+                    ))}
+                </Stack>
             </CardActions>
         </Card>
     );

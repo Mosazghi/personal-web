@@ -1,15 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import getApiPath from "../../utils/getApiPath";
 import groupBy from "../../utils/groupBy";
-import LoadingCourses from "../LoadingCourses";
+import LoadingStatus from "../LoadingStatus";
 import Course, { CourseProps } from "./Course";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Box from "@mui/material/Box";
-
 type GroupedCourses = Record<string, CourseProps[]>;
 
 const CourseList = () => {
@@ -44,14 +44,16 @@ const CourseList = () => {
         return () => {
             ignore = true;
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (loading) {
-        return <LoadingCourses />;
+        return <LoadingStatus message="Loading courses" />;
     }
 
     return (
-        <Box>
+        <Box component={"section"}>
+            {/* // eslint-disable-next-line @typescript-eslint/no-unused-vars */}
             {Object.entries(courses).map(([_, courseList], i) => (
                 <Accordion
                     key={i}

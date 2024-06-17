@@ -1,3 +1,4 @@
+import CssBaseline from "@mui/material/CssBaseline";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import FormLayout from "./layouts/FormLayout";
 import Layout from "./layouts/Layout";
@@ -6,7 +7,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NoPage from "./pages/NoPage";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
-import CssBaseline from "@mui/material/CssBaseline";
 function App() {
     return (
         <CssBaseline>

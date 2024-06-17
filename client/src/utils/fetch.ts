@@ -1,13 +1,13 @@
 import cookies from "./cookies";
 
-const fetchData = async (url: string) => {
+interface FetchDataProps {
+    url: string;
+    headers?: Record<string, string>;
+}
+const fetchData = async ({ url, headers }: FetchDataProps) => {
+    const config = { method: "GET", headers: { ...headers } };
     try {
-        const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${cookies.get("TOKEN")}`,
-            },
-        });
+        const response = await fetch(url, config);
         const data = await response.json();
         return data;
     } catch (e) {

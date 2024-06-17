@@ -1,30 +1,13 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
-import { fetchData, deleteData } from "../../utils/fetch";
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import cookies from "../../utils/cookies";
+import { deleteData, fetchData } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
-import CreateCourseForm from "../Course/CourseForm";
-import CoursesTable from "../Course/CoursesTable";
-import ProjectsTable from "../Project/ProjectsTable";
-import CreateProjectForm from "../Project/ProjectForm";
-
-interface Course {
-    id: number;
-    name: string;
-    semester: string;
-    description: string;
-    grade: string;
-    urlLink: string;
-    type: string;
-}
-
-interface Project {
-    id: number;
-    name: string;
-    description: string;
-    link: string;
-    technology: string;
-}
-
+import Button from "../Button";
+import CreateCourseForm, { Course } from "../Course/CourseForm";
+import CreateProjectForm, { Project } from "../Project/ProjectForm";
+import DataTable from "./Table";
+import { courseColumns, projectColumns } from "./columnsData";
 const AdminPanel = () => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
@@ -35,13 +18,20 @@ const AdminPanel = () => {
 
     const fetchCourses = useCallback(async () => {
         const apiUrl = getApiPath() + import.meta.env.VITE_COURSES_URL;
-        const data = await fetchData(apiUrl);
+
+        const headers = {
+            Authorization: `Bearer ${cookies.get("TOKEN")}`,
+        };
+        const data = await fetchData({ url: apiUrl, headers });
         setCourses(data);
     }, []);
 
     const fetchProjects = useCallback(async () => {
         const apiUrl = getApiPath() + import.meta.env.VITE_PROJECTS_URL;
-        const data = await fetchData(apiUrl);
+        const headers = {
+            Authorization: `Bearer ${cookies.get("TOKEN")}`,
+        };
+        const data = await fetchData({ url: apiUrl, headers });
         setProjects(data);
     }, []);
 
@@ -49,7 +39,6 @@ const AdminPanel = () => {
         const apiUrl = getApiPath() + import.meta.env.VITE_COURSES_URL + `/${id}`;
         const success = await deleteData(apiUrl);
         if (success) {
-            console.log("Deleted course with id: ", id);
             setCourses((prevCourses) => prevCourses.filter((course) => course.id !== id));
         }
     }, []);
@@ -77,107 +66,69 @@ const AdminPanel = () => {
         fetchProjects();
     }, [fetchCourses, fetchProjects]);
 
-    const handleOpenCourseDialog = () => {
-        setEditingCourse(null);
-        setOpenCourseDialog(true);
-    };
-    const handleCloseCourseDialog = () => setOpenCourseDialog(false);
-
-    const handleOpenProjectDialog = () => {
-        setEditingProject(null);
-        setOpenProjectDialog(true);
-    };
-    const handleCloseProjectDialog = () => setOpenProjectDialog(false);
-
-    const handleCourseFormSuccess = () => {
-        fetchCourses();
-        handleCloseCourseDialog();
+    const handleFormSuccess = (fetchFunction: () => Promise<void>, closeDialogFunction: () => boolean) => {
+        fetchFunction();
+        closeDialogFunction();
     };
 
-    const handleProjectFormSuccess = () => {
-        fetchProjects();
-        handleCloseProjectDialog();
-    };
+    const MemoizedData = (data: (Course | Project)[]) => useMemo(() => data, [data]);
 
-    const memoizedCourses = useMemo(() => courses, [courses]);
-    const memoizedProjects = useMemo(() => projects, [projects]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleOpenDialog = (setOpenDialogFunction: any) => () => setOpenDialogFunction(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleCloseDialog = (setOpenDialogFunction: any) => () => setOpenDialogFunction(false);
 
     return (
         <Box color={"whitesmoke"}>
-            <Button
-                color="success"
-                variant="outlined"
-                onClick={handleOpenCourseDialog}
-                sx={{
-                    mt: 3,
-                    mb: 2,
-                    border: "2px solid white",
-                    color: "white",
-                    borderColor: "white",
-                    "&:hover": {
-                        borderColor: "white",
-                        color: "white",
-                    },
-                }}
-            >
-                Create New Course
-            </Button>
-            <Typography variant="h4" sx={{ mb: 2 }}>
+            <Box my={3}>
+                <Button darkMode onClick={handleOpenDialog(setOpenCourseDialog)} text="Create New Course" />
+            </Box>
+            <Typography variant="h4" mb={2} fontStyle={"italic"}>
                 Courses
             </Typography>
-            <CoursesTable courses={memoizedCourses} onDelete={handleDeleteCourse} onEdit={handleEditCourse} />
-
-            <Button
-                color="success"
-                variant="outlined"
-                sx={{
-                    mt: 3,
-                    mb: 2,
-                    border: "2px solid white",
-                    color: "white",
-                    borderColor: "white",
-                    "&:hover": {
-                        borderColor: "white",
-                        color: "white",
-                    },
-                }}
-                onClick={handleOpenProjectDialog}
-            >
-                Create New Project
-            </Button>
-            <Typography variant="h4" sx={{ mb: 2 }}>
+            <DataTable
+                data={MemoizedData(courses)}
+                columns={courseColumns}
+                onDelete={handleDeleteCourse}
+                onEdit={handleEditCourse}
+            />
+            <Box my={3}>
+                <Button darkMode onClick={handleOpenDialog(setOpenProjectDialog)} text="Create New Project" />
+            </Box>
+            <Typography variant="h4" mb={2} fontStyle={"italic"}>
                 Projects
             </Typography>
-            <ProjectsTable projects={memoizedProjects} onDelete={handleDeleteProject} onEdit={handleEditProject} />
+            <DataTable
+                data={MemoizedData(projects)}
+                columns={projectColumns}
+                onDelete={handleDeleteProject}
+                onEdit={handleEditProject}
+            />
 
-            <Dialog open={openCourseDialog} onClose={handleCloseCourseDialog} maxWidth="sm" fullWidth>
+            <Dialog open={openCourseDialog} onClose={handleCloseDialog(setOpenCourseDialog)} maxWidth="sm" fullWidth>
                 <DialogTitle>{editingCourse ? "Edit Course" : "Create New Course"}</DialogTitle>
                 <DialogContent>
                     <CreateCourseForm
-                        onSuccess={handleCourseFormSuccess}
+                        onSuccess={() => handleFormSuccess(fetchCourses, handleCloseDialog(setOpenCourseDialog))}
                         onError={(message) => alert(message)}
                         course={editingCourse}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseCourseDialog} color="primary">
-                        Cancel
-                    </Button>
+                    <Button onClick={handleCloseDialog(setOpenCourseDialog)} text="Cancel" />
                 </DialogActions>
             </Dialog>
-            <Dialog open={openProjectDialog} onClose={handleCloseProjectDialog} maxWidth="sm" fullWidth>
+            <Dialog open={openProjectDialog} onClose={handleCloseDialog(setOpenProjectDialog)} maxWidth="sm" fullWidth>
                 <DialogTitle>{editingProject ? "Edit Project" : "Create New Project"}</DialogTitle>
                 <DialogContent>
                     <CreateProjectForm
-                        onSuccess={handleProjectFormSuccess}
+                        onSuccess={() => handleFormSuccess(fetchProjects, handleCloseDialog(setOpenProjectDialog))}
                         onError={(message) => alert(message)}
                         project={editingProject}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseProjectDialog} color="primary">
-                        Cancel
-                    </Button>
+                    <Button onClick={handleCloseDialog(setOpenProjectDialog)} text="Cancel" />
                 </DialogActions>
             </Dialog>
         </Box>

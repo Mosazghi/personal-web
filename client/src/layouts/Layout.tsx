@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
 import { Box } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { ReactNode } from "react";
 interface LayoutProps {
     children: ReactNode;
 }
