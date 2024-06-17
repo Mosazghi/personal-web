@@ -4,33 +4,47 @@ using my_web_server.Repositries;
 
 namespace my_web_server.Services
 {
-    /// <summary>
-    /// This class is used to handle the business logic for the Course table.
-    /// </summary>
-    /// <param name="courseRepository">For database access</param>
     public class CourseService(ICourseRepository courseRepository)
     {
-        private readonly ICourseRepository _courseRepository = courseRepository;
-
-        /// <summary>
-        ///  Fetches all courses from the database
-        /// </summary>
-        /// <returns> All courses into a list </returns>
-        public async Task<List<Course>> GetCoursesAsync()
+        public async Task<List<Course?>> GetCoursesAsync()
         {
-            return await _courseRepository.GetAllCoursesAsync();
+            return await courseRepository.GetAllCoursesAsync();
         }
 
-        /// <summary>
-        /// Creates a course in the database
-        /// </summary>
-        /// <param name="courseDto">Course data</param>
-        /// <returns>Given course if found</returns>
-        public async Task<Course> CreateCourseAsync(CourseDto courseDto)
+        public async Task<Course?> CreateCourseAsync(CourseDto courseDto)
         {
-            return await _courseRepository.CreateCourseAsync(courseDto);
+            var course = new Course(courseDto);
+            return await courseRepository.CreateCourseAsync(course);
         }
 
+        public async Task<Course?> UpdateCourseAsync(int id, CourseDto courseDto)
+        {
+            var course = await courseRepository.GetCourseByIdAsync(id);
+            if (course == null)
+            {
+                return null;
+            }
+
+            course.Name = courseDto.Name;
+            course.Description = courseDto.Description;
+            course.Semester = courseDto.Semester;
+            course.Type = courseDto.Type;
+            course.Grade = courseDto.Grade;
+            course.Description = courseDto.Description;
+            course.UrlLink = courseDto.UrlLink;
+
+            return await courseRepository.UpdateCourseAsync(id, course);
+        }
+
+        public async Task<Course?> DeleteCourseAsync(int id)
+        {
+            var course = await courseRepository.GetCourseByIdAsync(id);
+
+            if (course == null)
+            {
+                return null;
+            }
+            return await courseRepository.DeleteCourseAsync(id, course);
+        }
     }
-
 }

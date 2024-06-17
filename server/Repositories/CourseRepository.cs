@@ -5,52 +5,45 @@ using my_web_server.Models;
 
 namespace my_web_server.Repositries
 {
-    /// <summary>
-    /// This interface is used to access the Course table in the database.
-    /// </summary>
     public interface ICourseRepository
     {
-        /// <summary>
-        /// This method is used to get all courses from the database.
-        /// </summary>
-        /// <returns>All courses into a list</returns>
-        Task<List<Course>> GetAllCoursesAsync();
-
-        /// <summary>
-        /// This method is used to create a course in the database.
-        /// </summary>
-        /// <param name="courseDto">Course data</param>
-        /// <returns>Given course if found</returns>
-        Task<Course> CreateCourseAsync(CourseDto courseDto);
+        Task<Course?> GetCourseByIdAsync(int id);
+        Task<List<Course?>> GetAllCoursesAsync();
+        Task<Course?> CreateCourseAsync(Course courseDto);
+        Task<Course?> UpdateCourseAsync(int id, Course? course);
+        Task<Course?> DeleteCourseAsync(int id, Course? course);
     }
 
-    /// <summary>
-    /// This class is used to access the Course table in the database.
-    /// </summary>
-    /// <param name="context">Database context</param>
     public class CourseRepository(AppDbContext context) : ICourseRepository
     {
-        private readonly AppDbContext _context = context;
-
-        /// <summary>
-        /// This method is used to get all courses from the database.
-        /// </summary>
-        /// <returns>All courses into a list</returns>
-        public async Task<List<Course>> GetAllCoursesAsync()
+        public async Task<Course?> GetCourseByIdAsync(int id)
         {
-            return await _context.Courses.ToListAsync();
+            return await context.Courses.FindAsync(id);
         }
 
-        /// <summary>
-        /// This method is used to create a course in the database.
-        /// </summary>
-        /// <param name="courseDto">Course dto</param>
-        /// <returns>Given course if found</returns>
-        public async Task<Course> CreateCourseAsync(CourseDto courseDto)
+        public async Task<List<Course?>> GetAllCoursesAsync()
         {
-            Course course = new(courseDto);
-            await _context.Courses.AddAsync(course);
-            await _context.SaveChangesAsync();
+            return await context.Courses.ToListAsync();
+        }
+
+        public async Task<Course?> CreateCourseAsync(Course course)
+        {
+            await context.Courses.AddAsync(course);
+            await context.SaveChangesAsync();
+            return course;
+        }
+
+        public async Task<Course?> UpdateCourseAsync(int id, Course? course)
+        {
+            context.Courses.Update(course);
+            await context.SaveChangesAsync();
+            return course;
+        }
+
+        public async Task<Course?> DeleteCourseAsync(int id, Course? course)
+        {
+            context.Courses.Remove(course);
+            await context.SaveChangesAsync();
             return course;
         }
     }
