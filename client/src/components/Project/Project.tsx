@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { request } from "../../utils/fetch";
 import ButtonBase from "@mui/material/ButtonBase";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 export interface ProjectProps {
     name: string;
     description: string;
@@ -61,9 +61,11 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                     <Typography gutterBottom variant="h5" mb={0}>
                         {name}
                     </Typography>
-                    <IconButton href={repositoryLink} target="_blank" aria-label="open repository">
-                        <ArrowOutwardIcon sx={{ color: "black" }} fontSize="medium" />
-                    </IconButton>
+                    <Tooltip title="View on GitHub" placement="right">
+                        <IconButton href={repositoryLink} target="_blank" aria-label="open repository">
+                            <ArrowOutwardIcon sx={{ color: "black" }} fontSize="medium" />
+                        </IconButton>
+                    </Tooltip>
                 </Stack>
                 <Typography variant="body2" color="text.secondary">
                     {description}
