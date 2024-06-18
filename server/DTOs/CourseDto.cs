@@ -17,7 +17,6 @@ namespace my_web_server.DTOs
         [Required]
         public string? Description { get; set; }
 
-        [Required]
         [RegularExpression(
             @"^(Passed|Failed|[ABCDE])$",
             ErrorMessage = "Course grade must be 'Passed', 'Failed', 'A', 'B', 'C', 'D' or 'E'."
