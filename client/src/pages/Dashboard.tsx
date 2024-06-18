@@ -13,7 +13,7 @@ function Dashboard() {
     };
 
     return (
-        <Box>
+        <Box py={2}>
             <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 5 }}>
                 <Typography
                     variant="h1"

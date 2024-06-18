@@ -25,9 +25,9 @@ interface CourseFormProps {
 
 const defualtCourse = {
     name: "",
-    semester: "22-H2",
+    semester: "24-H2",
     description: "",
-    grade: "A",
+    grade: "",
     urlLink: "",
     type: "O",
 };
@@ -108,7 +108,7 @@ const CreateCourseForm = ({ onSuccess, onError, course }: CourseFormProps) => {
                 multiline
                 rows={4}
             />
-            <FormControl required>
+            <FormControl>
                 <InputLabel>Grade</InputLabel>
                 <Select name="grade" value={formData.grade} onChange={handleChange}>
                     <MenuItem value="A">A</MenuItem>
