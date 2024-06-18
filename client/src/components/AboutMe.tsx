@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { request } from "../utils/fetch";
+import LoadingStatus from "./LoadingStatus";
 const AboutMe = () => {
     const [aboutInfo, setAboutInfo] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const config = {
@@ -13,11 +15,19 @@ const AboutMe = () => {
                 "X-Bin-Meta": "false",
             },
         };
+        setLoading(true);
         request(config)
             .then((response) => response)
-            .then((data) => setAboutInfo(data.text));
+            .then((data) => {
+                setAboutInfo(data.text);
+
+                setLoading(false);
+            });
     }, []);
 
+    if (loading) {
+        return <LoadingStatus message="Loading about me" />;
+    }
     return (
         <Stack
             direction={{ xs: "column", md: "row" }}
