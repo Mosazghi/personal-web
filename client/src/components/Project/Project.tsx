@@ -10,6 +10,7 @@ import { request } from "../../utils/fetch";
 import ButtonBase from "@mui/material/ButtonBase";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { IconButton, Tooltip } from "@mui/material";
+import isMobileDevice from "../../utils/isMobileDevice";
 
 export interface ProjectProps {
     name: string;
@@ -22,6 +23,9 @@ export interface ProjectProps {
 
 const Project = ({ name, description, showcaseLink, techStack, previewLink, repositoryLink }: ProjectProps) => {
     const [techLogos, setTechLogos] = useState<Record<string, string>>({});
+    const isMobile = isMobileDevice();
+    const split = showcaseLink.split("|");
+    showcaseLink = !isMobile ? split[0] : split[1]; // mp4. | .gif
 
     useEffect(() => {
         const config = {
@@ -47,15 +51,13 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                 onClick={() => window.open(previewLink)}
             >
                 <CardMedia
-                    component="video"
+                    component={isMobile ? "img" : "video"}
                     sx={{
                         "&:hover": { opacity: 0.5 },
                     }}
-                    onContextMenu={(e) => e.preventDefault()}
+                    onContextMenu={(e: any) => e.preventDefault()}
                     src={showcaseLink}
-                    autoPlay
-                    loop
-                    disablePictureInPicture
+                    {...(!isMobile && { autoPlay: true, loop: true, disablePictureInPicture: true })}
                 />
             </ButtonBase>
             <CardContent sx={{ pt: 1 }}>
