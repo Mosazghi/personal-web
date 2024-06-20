@@ -48,18 +48,13 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
             >
                 <CardMedia
                     component="video"
-                    // // alt={name}
                     sx={{
-                        //dim the image when hovered
                         "&:hover": { opacity: 0.5 },
                     }}
+                    onContextMenu={(e) => e.preventDefault()}
                     src={showcaseLink}
                     autoPlay
                     loop
-                    // disable picture in picture
-                    playsInline
-                    disablePictureInPicture
-                    disableRemotePlayback
                 />
             </ButtonBase>
             <CardContent sx={{ pt: 1 }}>
