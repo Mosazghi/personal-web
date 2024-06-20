@@ -10,6 +10,7 @@ import { request } from "../../utils/fetch";
 import ButtonBase from "@mui/material/ButtonBase";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { IconButton, Tooltip } from "@mui/material";
+
 export interface ProjectProps {
     name: string;
     description: string;
@@ -46,14 +47,19 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                 onClick={() => window.open(previewLink)}
             >
                 <CardMedia
-                    component="img"
-                    alt={name}
-                    height="200"
+                    component="video"
+                    // // alt={name}
                     sx={{
                         //dim the image when hovered
                         "&:hover": { opacity: 0.5 },
                     }}
-                    image={showcaseLink}
+                    src={showcaseLink}
+                    autoPlay
+                    loop
+                    // disable picture in picture
+                    playsInline
+                    disablePictureInPicture
+                    disableRemotePlayback
                 />
             </ButtonBase>
             <CardContent sx={{ pt: 1 }}>
