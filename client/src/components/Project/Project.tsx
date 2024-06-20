@@ -55,6 +55,7 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                     src={showcaseLink}
                     autoPlay
                     loop
+                    disablePictureInPicture
                 />
             </ButtonBase>
             <CardContent sx={{ pt: 1 }}>
