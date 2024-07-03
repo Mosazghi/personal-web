@@ -9,6 +9,7 @@ import Button from "../components/Button";
 import cookies from "../utils/cookies";
 import getApiPath from "../utils/getApiPath";
 import { request } from "../utils/fetch";
+import { useState } from "react";
 const inputStyles = {
     "& .MuiOutlinedInput-root": {
         "& fieldset": {
@@ -36,6 +37,7 @@ export default function Login() {
     }
 
     const authUrl = getApiPath() + import.meta.env.VITE_ADMIN_LOGIN_URL;
+    const [error, setError] = useState<string>("");
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -51,9 +53,12 @@ export default function Login() {
 
         request(config)
             .then((data) => {
-                console.log("data", data);
-                cookies.set("TOKEN", data.token, { path: "/" });
-                navigate("/admin/dashboard");
+                if (data) {
+                    cookies.set("TOKEN", data.token, { path: "/" });
+                    navigate("/admin/dashboard");
+                } else {
+                    setError("Invalid credentials");
+                }
             })
             .catch(() => {
                 console.log("error");
@@ -118,6 +123,11 @@ export default function Login() {
                             sx={inputStyles}
                         />
                     </Box>
+                    {error && (
+                        <Typography variant="body1" color="error" mb={2} mt={-1}>
+                            {error}
+                        </Typography>
+                    )}
                     <Button type="submit" fullWidth darkMode text="Sign in" />
                     <Link href="/" variant="body1" textAlign={"end"} underline="none">
                         <Typography color={blueGrey[200]} mt={2}>
