@@ -5,4 +5,4 @@
 ![3](/screenshots/3.png)
 ![4](/screenshots/4.png)
 ![5](/screenshots/5.png)
-![Mobile view](/screenshots/6.png)
+![7](/screenshots/7.png)

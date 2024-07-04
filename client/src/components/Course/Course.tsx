@@ -3,6 +3,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "../Button";
 import Typography from "@mui/material/Typography";
+import { Tooltip } from "@mui/material";
 export interface CourseProps {
     name: string;
     description: string;
@@ -38,7 +39,16 @@ const Course = ({ name, description, type, grade, urlLink }: CourseProps) => {
             </CardContent>
             <CardActions sx={{ display: "flex", justifyContent: "space-between", pt: 0 }}>
                 <Button size="small" link={urlLink} text="Read more" />
-                <abbr title={type === "O" ? "Obligatory course" : "Additional course"}>{type}</abbr>
+                <Tooltip title={type === "O" ? "Obligatory course" : "Additional course"}>
+                    <Typography
+                        sx={{
+                            textDecoration: "underline",
+                            textDecorationStyle: "dotted",
+                        }}
+                    >
+                        {type}
+                    </Typography>
+                </Tooltip>
             </CardActions>
         </Card>
     );

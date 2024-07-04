@@ -30,14 +30,9 @@ const inputStyles = {
     },
 };
 export default function Login() {
-    const navigate = useNavigate();
-
-    if (cookies.get("TOKEN")) {
-        return <Navigate to="/admin/dashboard" />;
-    }
-
-    const authUrl = getApiPath() + import.meta.env.VITE_ADMIN_LOGIN_URL;
     const [error, setError] = useState<string>("");
+    const authUrl = getApiPath() + import.meta.env.VITE_ADMIN_LOGIN_URL;
+    const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -61,10 +56,13 @@ export default function Login() {
                 }
             })
             .catch(() => {
-                console.log("error");
                 return new Error();
             });
     };
+
+    if (cookies.get("TOKEN")) {
+        return <Navigate to="/admin/dashboard" />;
+    }
 
     return (
         <Container

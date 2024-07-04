@@ -55,7 +55,7 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                     sx={{
                         "&:hover": { opacity: 0.5 },
                     }}
-                    onContextMenu={(e: any) => e.preventDefault()}
+                    onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                     src={showcaseLink}
                     {...(!isMobile && { autoPlay: true, loop: true, disablePictureInPicture: true })}
                 />
