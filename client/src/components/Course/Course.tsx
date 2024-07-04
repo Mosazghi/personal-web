@@ -39,7 +39,7 @@ const Course = ({ name, description, type, grade, urlLink }: CourseProps) => {
             </CardContent>
             <CardActions sx={{ display: "flex", justifyContent: "space-between", pt: 0 }}>
                 <Button size="small" link={urlLink} text="Read more" />
-                <Tooltip title={type === "O" ? "Obligatory course" : "Additional course"}>
+                <Tooltip title={type === "O" ? "Obligatory course" : "Additional course"} placement="left">
                     <Typography
                         sx={{
                             textDecoration: "underline",
