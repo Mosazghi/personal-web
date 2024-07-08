@@ -78,7 +78,9 @@ const CourseList = () => {
                         }}
                     >
                         {courseList.map((course, j) => (
-                            <Course key={j} {...course} />
+                            <Box component={"article"}>
+                                <Course key={j} {...course} />
+                            </Box>
                         ))}
                     </AccordionDetails>
                 </Accordion>

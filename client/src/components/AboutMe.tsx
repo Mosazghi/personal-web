@@ -30,6 +30,7 @@ const AboutMe = () => {
     }
     return (
         <Stack
+            component="section"
             direction={{ xs: "column", md: "row" }}
             gap={2}
             justifyContent="center"

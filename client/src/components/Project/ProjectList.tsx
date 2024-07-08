@@ -53,7 +53,7 @@ const ProjectList = () => {
         <Box component="section" py={3}>
             <Grid container spacing={2} alignItems="start" justifyContent="center">
                 {projects.map((project, index: number) => (
-                    <Grid item xs={12} sm={6} md={5} key={index}>
+                    <Grid component={"article"} item xs={12} sm={6} md={5} key={index}>
                         <Project {...project} />
                     </Grid>
                 ))}
