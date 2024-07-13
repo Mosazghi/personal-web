@@ -78,7 +78,7 @@ const CourseList = () => {
                         }}
                     >
                         {courseList.map((course, j) => (
-                            <Box component={"article"}>
+                            <Box key={j} component={"article"}>
                                 <Course key={j} {...course} />
                             </Box>
                         ))}

@@ -49,6 +49,7 @@ const ProjectList = () => {
     if (projects.length === 0) {
         return <NoProjects />;
     }
+
     return (
         <Box component="section" py={3}>
             <Grid container spacing={2} alignItems="start" justifyContent="center">

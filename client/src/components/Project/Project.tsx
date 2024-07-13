@@ -79,7 +79,9 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                 <Stack px={1} gap={1} direction={"row"}>
                     {techStack.map((tech, i) => (
                         <Box component="span" key={i} sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                            <img src={techLogos[tech]} alt={tech} style={{ height: 21, width: 21 }} />
+                            <Tooltip title={tech} placement="bottom">
+                                <img src={techLogos[tech]} alt={tech} style={{ height: 21, width: 21 }} />
+                            </Tooltip>
                         </Box>
                     ))}
                 </Stack>
