@@ -4,6 +4,7 @@ import cookies from "../../utils/cookies";
 import getApiPath from "../../utils/getApiPath";
 import Button from "../Button";
 import { request } from "../../utils/fetch";
+import noChangesMade from "../../utils/noChangesMade";
 
 export interface Course {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,10 +43,6 @@ const CreateCourseForm = ({ onSuccess, onError, course }: CourseFormProps) => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        if (course && JSON.stringify(course) === JSON.stringify(formData)) {
-            alert("No changes were made.");
-            return;
-        }
 
         const config = {
             method: course ? "PUT" : "POST",
@@ -130,7 +127,7 @@ const CreateCourseForm = ({ onSuccess, onError, course }: CourseFormProps) => {
                     <MenuItem value="E">E</MenuItem>
                 </Select>
             </FormControl>
-            <Button type="submit" text={course ? "Update Course " : "Create New Course"} />
+            <Button disabled={noChangesMade(course, formData)} type="submit" text={course ? "Update Course " : "Create New Course"} />
         </Box>
     );
 };

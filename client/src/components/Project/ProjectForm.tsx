@@ -6,6 +6,7 @@ import cookies from "../../utils/cookies";
 import TechStackInput from "./TechStackInput";
 import { ProjectProps } from "./Project";
 import { request } from "../../utils/fetch";
+import noChangesMade from "../../utils/noChangesMade";
 export interface Project {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
@@ -126,7 +127,7 @@ export default function CreateProjectForm({ onSuccess, onError, project }: Proje
                 techStacks={formData.techStack}
                 setTechStacks={(newTechStack: string[]) => setFormData({ ...formData, techStack: newTechStack })}
             />
-            <Button type="submit" text={project ? "Update Project" : "Create New Project"} />
+            <Button disabled={noChangesMade(project, formData)} type="submit" text={project ? "Update Project" : "Create New Project"} />
         </Box>
     );
 }
