@@ -1,13 +1,10 @@
-import { Button as ButtonMui } from "@mui/material";
+import { Button as ButtonMui, ButtonProps as ButtonMuiProps } from "@mui/material";
 
-interface ButtonProps {
+interface ButtonProps extends Omit<ButtonMuiProps, 'color' | 'variant'> {
     onClick?: () => void;
     text: string;
     link?: string;
-    size?: "small" | "medium" | "large";
     darkMode?: boolean;
-    type?: "button" | "submit" | "reset";
-    fullWidth?: boolean | undefined;
 }
 
 const Button = ({
@@ -18,7 +15,8 @@ const Button = ({
     darkMode = false,
     type = "button",
     fullWidth = false,
-}: ButtonProps) => {
+    ...props
+}: ButtonProps): JSX.Element => {
     const color = darkMode ? "white" : "black";
     return (
         <ButtonMui
@@ -36,9 +34,11 @@ const Button = ({
                 borderColor: color,
                 "&:hover": { borderColor: color, color: color },
             }}
+            {...props}
         >
             {text}
         </ButtonMui>
     );
 };
+
 export default Button;
