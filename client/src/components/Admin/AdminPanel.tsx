@@ -1,4 +1,4 @@
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Tabs, Tab } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import cookies from "../../utils/cookies";
 import getApiPath from "../../utils/getApiPath";
@@ -9,6 +9,13 @@ import DataTable from "./Table";
 import { courseColumns, projectColumns } from "./columnsData";
 import { request } from "../../utils/fetch";
 
+const tabStyles = {
+    color: "gray",
+    "&.Mui-selected": {
+        color: "whitesmoke",
+    },
+};
+
 const AdminPanel = () => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
@@ -16,6 +23,7 @@ const AdminPanel = () => {
     const [openProjectDialog, setOpenProjectDialog] = useState(false);
     const [editingCourse, setEditingCourse] = useState<Course | null>(null);
     const [editingProject, setEditingProject] = useState<Project | null>(null);
+    const [selectedTab, setSelectedTab] = useState(0); // State to manage the selected tab
 
     const fetchCourses = useCallback(async () => {
         const config = {
@@ -94,42 +102,68 @@ const AdminPanel = () => {
 
     const MemoizedData = (data: (Course | Project)[]) => useMemo(() => data, [data]);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleOpenDialog = (setOpenDialogFunction: any) => () => {
         setOpenDialogFunction(true);
 
         if (editingCourse) setEditingCourse(null);
         if (editingProject) setEditingProject(null);
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const handleCloseDialog = (setOpenDialogFunction: any) => () => setOpenDialogFunction(false);
 
+    const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+        setSelectedTab(newValue);
+    };
+
     return (
-        <Box color={"whitesmoke"}>
-            <Box my={3}>
-                <Button darkMode onClick={handleOpenDialog(setOpenCourseDialog)} text="Create New Course" />
-            </Box>
-            <Typography variant="h4" mb={2} fontStyle={"italic"}>
-                Courses
-            </Typography>
-            <DataTable
-                data={MemoizedData(courses)}
-                columns={courseColumns}
-                onDelete={handleDeleteCourse}
-                onEdit={handleEditCourse}
-            />
-            <Box my={3}>
-                <Button darkMode onClick={handleOpenDialog(setOpenProjectDialog)} text="Create New Project" />
-            </Box>
-            <Typography variant="h4" mb={2} fontStyle={"italic"}>
-                Projects
-            </Typography>
-            <DataTable
-                data={MemoizedData(projects)}
-                columns={projectColumns}
-                onDelete={handleDeleteProject}
-                onEdit={handleEditProject}
-            />
+        <Box color={"whitesmoke"} minHeight={"100vh"}>
+            <Tabs
+                value={selectedTab}
+                onChange={handleTabChange}
+                variant="fullWidth"
+                sx={{
+                    "& .MuiTabs-indicator": {
+                        backgroundColor: "whitesmoke",
+                    },
+                }}
+            >
+                <Tab label="Courses" sx={tabStyles} />
+                <Tab label="Projects" sx={tabStyles} />
+            </Tabs>
+
+            {selectedTab === 0 && (
+                <>
+                    <Box my={3}>
+                        <Button darkMode onClick={handleOpenDialog(setOpenCourseDialog)} text="Create New Course" />
+                    </Box>
+                    <Typography variant="h4" mb={2} fontStyle={"italic"}>
+                        Courses
+                    </Typography>
+                    <DataTable
+                        data={MemoizedData(courses)}
+                        columns={courseColumns}
+                        onDelete={handleDeleteCourse}
+                        onEdit={handleEditCourse}
+                    />
+                </>
+            )}
+
+            {selectedTab === 1 && (
+                <>
+                    <Box my={3}>
+                        <Button darkMode onClick={handleOpenDialog(setOpenProjectDialog)} text="Create New Project" />
+                    </Box>
+                    <Typography variant="h4" mb={2} fontStyle={"italic"}>
+                        Projects
+                    </Typography>
+                    <DataTable
+                        data={MemoizedData(projects)}
+                        columns={projectColumns}
+                        onDelete={handleDeleteProject}
+                        onEdit={handleEditProject}
+                    />
+                </>
+            )}
 
             <Dialog open={openCourseDialog} onClose={handleCloseDialog(setOpenCourseDialog)} maxWidth="sm" fullWidth>
                 <DialogTitle>{editingCourse ? "Edit Course" : "Create New Course"}</DialogTitle>
@@ -144,6 +178,7 @@ const AdminPanel = () => {
                     <Button onClick={handleCloseDialog(setOpenCourseDialog)} text="Cancel" />
                 </DialogActions>
             </Dialog>
+
             <Dialog open={openProjectDialog} onClose={handleCloseDialog(setOpenProjectDialog)} maxWidth="sm" fullWidth>
                 <DialogTitle>{editingProject ? "Edit Project" : "Create New Project"}</DialogTitle>
                 <DialogContent>
