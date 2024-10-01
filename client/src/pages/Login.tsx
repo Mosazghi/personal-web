@@ -32,6 +32,7 @@ const inputStyles = {
 export default function Login() {
     const [error, setError] = useState<string>("");
     const authUrl = getApiPath() + import.meta.env.VITE_ADMIN_LOGIN_URL;
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +46,7 @@ export default function Login() {
                 password: data.get("password"),
             },
         };
-
+        setLoading(true);
         request(config)
             .then((data) => {
                 if (data) {
@@ -57,7 +58,8 @@ export default function Login() {
             })
             .catch(() => {
                 return new Error();
-            });
+            })
+            .finally(() => setLoading(false));
     };
 
     if (cookies.get("TOKEN")) {
@@ -126,7 +128,7 @@ export default function Login() {
                             {error}
                         </Typography>
                     )}
-                    <Button type="submit" fullWidth darkMode text="Sign in" />
+                    <Button type="submit" fullWidth darkMode text={loading ? "Loading..." : "Sign in"} />
                     <Link href="/" variant="body1" textAlign={"end"} underline="none">
                         <Typography color={blueGrey[200]} mt={2}>
                             Return to portfolio
