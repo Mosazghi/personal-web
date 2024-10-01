@@ -47,6 +47,7 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                 sx={{
                     width: "100%",
                     "&:hover": { backgroundColor: "black" },
+                    backgroundColor: "black",
                 }}
                 onClick={() => window.open(previewLink)}
             >
@@ -54,6 +55,7 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                     component={isMobile ? "img" : "video"}
                     sx={{
                         "&:hover": { opacity: 0.5 },
+                        maxHeight: 350,
                     }}
                     onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                     src={showcaseLink}
