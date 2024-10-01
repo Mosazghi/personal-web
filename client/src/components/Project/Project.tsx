@@ -55,7 +55,7 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
                     component={isMobile ? "img" : "video"}
                     sx={{
                         "&:hover": { opacity: 0.5 },
-                        maxHeight: 350,
+                        maxHeight: !isMobile ? 350 : "auto",
                     }}
                     onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                     src={showcaseLink}
