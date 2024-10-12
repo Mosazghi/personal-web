@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { request } from "../utils/fetch";
 import LoadingStatus from "./LoadingStatus";
+
 const AboutMe = () => {
     const [aboutInfo, setAboutInfo] = useState("");
     const [loading, setLoading] = useState(true);
@@ -9,7 +10,7 @@ const AboutMe = () => {
     useEffect(() => {
         const config = {
             method: "GET",
-            url: "https://api.jsonbin.io/v3/b/65948ae8dc746540188c2440",
+            url: "https://api.jsonbin.io/v3/b/670a7f39acd3cb34a895a5b4 ",
             headers: {
                 "X-Master-Key": import.meta.env.VITE_ABOUT_ME_API_KEY,
                 "X-Bin-Meta": "false",
@@ -20,7 +21,6 @@ const AboutMe = () => {
             .then((response) => response)
             .then((data) => {
                 setAboutInfo(data.text);
-
                 setLoading(false);
             });
     }, []);
@@ -28,6 +28,7 @@ const AboutMe = () => {
     if (loading) {
         return <LoadingStatus message="Loading about me" />;
     }
+
     return (
         <Stack
             component="section"
@@ -43,12 +44,27 @@ const AboutMe = () => {
             <Typography variant="h3" fontStyle={"italic"} fontSize={{ xs: "1.5rem", md: "2.5rem" }}>
                 Briefly about me
             </Typography>
-            <Box>
+            <Box sx={{ cursor: "text" }}>
                 {aboutInfo &&
                     aboutInfo.split("\n").map((line, i) => (
-                        <Typography key={i} fontSize={{ xs: "1.125rem", md: "1.125rem" }}>
+                        <Typography
+                            key={i}
+                            fontSize={{
+                                xs: "1.125rem",
+                                md: "1.125rem",
+                            }}
+                            sx={{
+                                // Target the <a> tags inside this Typography
+                                "& a": {
+                                    textDecoration: "underline",
+                                    textDecorationColor: "white",
+                                    color: "inherit", // Apply color to the <a> tag
+                                },
+                            }}
+                        >
                             {i !== 0 && <br />}
-                            {line}
+                            {/* Render the line as HTML */}
+                            <span dangerouslySetInnerHTML={{ __html: line }} />
                         </Typography>
                     ))}
             </Box>
