@@ -10,11 +10,7 @@ const AboutMe = () => {
     useEffect(() => {
         const config = {
             method: "GET",
-            url: "https://api.jsonbin.io/v3/b/670a7f39acd3cb34a895a5b4 ",
-            headers: {
-                "X-Master-Key": import.meta.env.VITE_ABOUT_ME_API_KEY,
-                "X-Bin-Meta": "false",
-            },
+            url: "https://api.npoint.io/7b57d163135f40a37a99",
         };
         setLoading(true);
         request(config)

@@ -30,11 +30,7 @@ const Project = ({ name, description, showcaseLink, techStack, previewLink, repo
     useEffect(() => {
         const config = {
             method: "GET",
-            url: "https://api.jsonbin.io/v3/b/66706c8ce41b4d34e404a7af",
-            headers: {
-                "X-Master-Key": import.meta.env.VITE_ABOUT_ME_API_KEY,
-                "X-Bin-Meta": "false",
-            },
+            url: "https://api.npoint.io/961a5a6ec930fb9da6f8",
         };
         request(config)
             .then((response) => response)
