@@ -38,53 +38,57 @@ const CourseList = () => {
     }
 
     return (
-        <Box component={"section"}>
+        <Box component="section" py={3} sx={{ color: "white" }}>
             {/* // eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-            {Object.entries(courses).map(([_, courseList], i) => (
-                <Accordion
-                    key={i}
-                    sx={{
-                        backgroundColor: "inherit",
-                        my: "1em",
-                        boxShadow: "none",
-                        px: "0",
-                    }}
-                    slotProps={{ transition: { unmountOnExit: true } }}
-                    disableGutters
-                >
-                    <AccordionSummary
-                        expandIcon={<ArrowDropDownIcon sx={{ color: "white" }} />}
-                        aria-controls={`panel${i}-content`}
-                        id={`panel${i}-header`}
+            {courses ? (
+                Object.entries(courses).map(([_, courseList], i) => (
+                    <Accordion
+                        key={i}
                         sx={{
-                            color: "white",
-                            border: "1px solid #fff",
-                            borderRadius: "10px",
-                            m: "0",
-                            mb: { xs: "1em", sm: "0" },
+                            backgroundColor: "inherit",
+                            my: "1em",
+                            boxShadow: "none",
+                            px: "0",
                         }}
+                        slotProps={{ transition: { unmountOnExit: true } }}
+                        disableGutters
                     >
-                        <Typography>{`${i + 1}. Semester`}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails
-                        sx={{
-                            display: "grid",
-                            gridTemplateColumns: {
-                                xs: "repeat(1, minmax(0, 1fr))",
-                                md: "repeat(auto-fit, minmax(400px, 1fr))",
-                            },
-                            gap: "1rem",
-                            p: { xs: "0", sm: "1rem" },
-                        }}
-                    >
-                        {courseList.map((course, j) => (
-                            <Box key={j} component={"article"}>
-                                <Course key={j} {...course} />
-                            </Box>
-                        ))}
-                    </AccordionDetails>
-                </Accordion>
-            ))}
+                        <AccordionSummary
+                            expandIcon={<ArrowDropDownIcon sx={{ color: "white" }} />}
+                            aria-controls={`panel${i}-content`}
+                            id={`panel${i}-header`}
+                            sx={{
+                                color: "white",
+                                border: "1px solid #fff",
+                                borderRadius: "10px",
+                                m: "0",
+                                mb: { xs: "1em", sm: "0" },
+                            }}
+                        >
+                            <Typography>{`${i + 1}. Semester`}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: {
+                                    xs: "repeat(1, minmax(0, 1fr))",
+                                    md: "repeat(auto-fit, minmax(400px, 1fr))",
+                                },
+                                gap: "1rem",
+                                p: { xs: "0", sm: "1rem" },
+                            }}
+                        >
+                            {courseList.map((course, j) => (
+                                <Box key={j} component={"article"}>
+                                    <Course key={j} {...course} />
+                                </Box>
+                            ))}
+                        </AccordionDetails>
+                    </Accordion>
+                ))
+            ) : (
+                <p>No courses at this time. </p>
+            )}
         </Box>
     );
 };

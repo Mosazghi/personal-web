@@ -51,13 +51,17 @@ const ProjectList = () => {
     }
 
     return (
-        <Box component="section" py={3}>
+        <Box component="section" py={3} sx={{ color: "white" }}>
             <Grid container spacing={2} alignItems="start" justifyContent="center">
-                {projects.map((project, index: number) => (
-                    <Grid component={"article"} item xs={12} sm={6} md={5} key={index}>
-                        <Project {...project} />
-                    </Grid>
-                ))}
+                {projects.length > 0 ? (
+                    projects.map((project, index: number) => (
+                        <Grid component={"article"} item xs={12} sm={6} md={5} key={index}>
+                            <Project {...project} />
+                        </Grid>
+                    ))
+                ) : (
+                    <p>No featured projects at this time. </p>
+                )}
             </Grid>
         </Box>
     );
