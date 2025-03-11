@@ -1,4 +1,5 @@
 using System.Text;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,11 +9,13 @@ using my_web_server.Repositries;
 using my_web_server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+Env.Load();
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.ConfigureSwaggerGen(setup =>
 {
     setup.SwaggerDoc(
@@ -22,8 +25,14 @@ builder.Services.ConfigureSwaggerGen(setup =>
 });
 
 // Register the AppDbContext.
-var connectionString = builder.Configuration.GetConnectionString("WebApiDatabase");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+var connectionString = Environment.GetEnvironmentVariable("DbConnection");
+var jwtIssuer = Environment.GetEnvironmentVariable("JwtIssuer");
+var jwtKey = Environment.GetEnvironmentVariable("JwtKey");
+
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString)
+);
 
 // Register repositories and services.
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
@@ -34,8 +43,6 @@ builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<LoginService>();
 
 // JWT configuration
-var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
-var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
 
 builder
     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -62,10 +69,8 @@ builder.Services.AddCors(options =>
         {
             policy
                 .WithOrigins(
-                    "https://mosazghi.codes",
                     "https://mostes.no",
-                    "http://localhost:5173",
-                    "http://127.0.0.1:5173"
+                    "http://localhost:3000"
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod();

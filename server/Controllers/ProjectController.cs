@@ -17,7 +17,7 @@ namespace my_web_server.Controllers
         {
             var projects = await _projectService.GetAllProjectsAsync();
 
-            if (projects.IsNullOrEmpty())
+            if (projects == null)
             {
                 return NotFound(new { Message = "There are no projects available" });
             }

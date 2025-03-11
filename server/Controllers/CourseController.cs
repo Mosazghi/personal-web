@@ -18,7 +18,7 @@ namespace my_web_server.Controllers
         {
             List<Course?> courses = await _courseService.GetCoursesAsync();
 
-            if (courses.IsNullOrEmpty())
+            if (courses == null)
             {
                 return NotFound(new { Message = "There are no courses available" });
             }

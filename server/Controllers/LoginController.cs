@@ -36,14 +36,16 @@ namespace my_web_server.Controllers
 
         private string GenerateJSONWebToken(Admin admin)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var jwtIssuer = Environment.GetEnvironmentVariable("JwtIssuer");
+            var jwtKey = Environment.GetEnvironmentVariable("JwtKey");
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey ?? ""));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim> { new(JwtRegisteredClaimNames.Name, admin.Username), };
 
             var token = new JwtSecurityToken(
-                _config["Jwt:Issuer"],
-                _config["Jwt:Issuer"],
+               jwtIssuer,
+                jwtKey,
                 claims,
                 expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials
