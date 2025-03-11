@@ -27,13 +27,12 @@ builder.Services.ConfigureSwaggerGen(setup =>
 // Register the AppDbContext.
 var connectionString = Environment.GetEnvironmentVariable("DbConnection");
 var jwtIssuer = Environment.GetEnvironmentVariable("JwtIssuer");
+var jwtAudience = Environment.GetEnvironmentVariable("JwtAudience");
 var jwtKey = Environment.GetEnvironmentVariable("JwtKey");
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString)
-);
-
+    options.UseNpgsql(connectionString) ); 
 // Register repositories and services.
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<CourseService>();
@@ -55,7 +54,7 @@ builder
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtIssuer,
-            ValidAudience = jwtIssuer,
+            ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
         };
     });

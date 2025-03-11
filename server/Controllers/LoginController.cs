@@ -38,6 +38,7 @@ namespace my_web_server.Controllers
         {
             var jwtIssuer = Environment.GetEnvironmentVariable("JwtIssuer");
             var jwtKey = Environment.GetEnvironmentVariable("JwtKey");
+            var jwtAudience = Environment.GetEnvironmentVariable("JwtAudience");
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey ?? ""));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -45,7 +46,7 @@ namespace my_web_server.Controllers
 
             var token = new JwtSecurityToken(
                jwtIssuer,
-                jwtKey,
+                jwtAudience,
                 claims,
                 expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials
