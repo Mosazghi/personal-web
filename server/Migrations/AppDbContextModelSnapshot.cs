@@ -43,37 +43,6 @@ namespace my_web_server.Migrations
                     b.ToTable("Admins");
                 });
 
-            modelBuilder.Entity("my_web_server.Models.Course", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Grade")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Semester")
-                        .HasColumnType("text");
-
-                    b.Property<char?>("Type")
-                        .HasColumnType("character(1)");
-
-                    b.Property<string>("UrlLink")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Courses");
-                });
-
             modelBuilder.Entity("my_web_server.Models.Project", b =>
                 {
                     b.Property<int>("Id")

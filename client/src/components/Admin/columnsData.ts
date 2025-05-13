@@ -1,12 +1,3 @@
-export const courseColumns = [
-    { field: "name", headerName: "Name" },
-    { field: "semester", headerName: "Semester" },
-    { field: "description", headerName: "Description" },
-    { field: "grade", headerName: "Grade" },
-    { field: "urlLink", headerName: "Link", link: true },
-    { field: "type", headerName: "Type" },
-];
-
 export const projectColumns = [
     { field: "name", headerName: "Name" },
     { field: "description", headerName: "Description" },

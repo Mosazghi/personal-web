@@ -32,10 +32,8 @@ var jwtKey = Environment.GetEnvironmentVariable("JwtKey");
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString) ); 
+    options.UseNpgsql(connectionString));
 // Register repositories and services.
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<CourseService>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ProjectService>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();

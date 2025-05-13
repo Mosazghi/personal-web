@@ -10,7 +10,6 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
-import { Course } from "../Course/CourseForm";
 import { Project } from "../Project/ProjectForm";
 interface Column {
     headerName: string;
@@ -20,7 +19,7 @@ interface Column {
 }
 
 interface DataTableProps {
-    data: (Course | Project)[];
+    data: Project[];
     columns: Column[];
     onDelete: (id: number) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

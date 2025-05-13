@@ -33,7 +33,7 @@ const AboutMe = () => {
             justifyContent="center"
             color="transparent"
             sx={{
-                background: "linear-gradient(to bottom, #f7fafc, #e2e8f0, #cbd5e0)",
+                background: "white",
                 WebkitBackgroundClip: "text",
             }}
         >
@@ -42,27 +42,30 @@ const AboutMe = () => {
             </Typography>
             <Box sx={{ cursor: "text" }}>
                 {aboutInfo &&
-                    aboutInfo.split("\n").map((line, i) => (
-                        <Typography
-                            key={i}
-                            fontSize={{
-                                xs: "1.125rem",
-                                md: "1.125rem",
-                            }}
-                            sx={{
-                                // Target the <a> tags inside this Typography
-                                "& a": {
-                                    textDecoration: "underline",
-                                    textDecorationColor: "white",
-                                    color: "inherit", // Apply color to the <a> tag
-                                },
-                            }}
-                        >
-                            {i !== 0 && <br />}
-                            {/* Render the line as HTML */}
-                            <span dangerouslySetInnerHTML={{ __html: line }} />
-                        </Typography>
-                    ))}
+                    aboutInfo.split("\n").map((line, i) => {
+                        console.log("line", line);
+                        return (
+                            <Typography
+                                key={i}
+                                fontSize={{
+                                    xs: "1.125rem",
+                                    md: "1.125rem",
+                                }}
+                                sx={{
+                                    // Target the <a> tags inside this Typography
+                                    "& a": {
+                                        textDecoration: "underline",
+                                        textDecorationColor: "white",
+                                        color: "inherit", // Apply color to the <a> tag
+                                    },
+                                }}
+                            >
+                                {i !== 0 && <br />}
+                                {/* Render the line as HTML */}
+                                <span dangerouslySetInnerHTML={{ __html: line }} />
+                            </Typography>
+                        );
+                    })}
             </Box>
         </Stack>
     );

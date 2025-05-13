@@ -26,6 +26,7 @@ const NoProjects = () => {
 const ProjectList = () => {
     const [projects, setProjects] = useState<ProjectProps[]>([]);
     const [loading, setLoading] = useState(true);
+    console.log("url", getApiPath() + import.meta.env.VITE_PROJECTS_URL);
 
     useEffect(() => {
         const config = {

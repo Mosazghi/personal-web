@@ -5,7 +5,6 @@ namespace my_web_server.Data
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
-        public DbSet<Course> Courses { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Project> Projects { get; set; }
     }

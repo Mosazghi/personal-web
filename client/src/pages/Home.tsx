@@ -1,5 +1,4 @@
 import AboutMe from "../components/AboutMe";
-import CourseList from "../components/Course/CourseList";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import HeadingText from "../components/HeadingText";
@@ -14,8 +13,6 @@ function Home() {
                 <AboutMe />
                 <HeadingText text="Featured Projects" />
                 <ProjectList />
-                <HeadingText text="Courses" />
-                <CourseList />
             </Box>
             <Footer />
         </>

@@ -5,4 +5,3 @@ const getApiPath = () => {
 };
 
 export default getApiPath;
-
