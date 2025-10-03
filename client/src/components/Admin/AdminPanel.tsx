@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import cookies from "../../utils/cookies";
 import { request } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
-import Button from "../Button";
+import { Button } from "../ui/button";
 import CreateProjectForm, { Project } from "../Project/ProjectForm";
 import DataTable from "./Table";
 import { projectColumns } from "./columnsData";
@@ -85,7 +85,7 @@ const AdminPanel = () => {
             {selectedTab === 0 && (
                 <>
                     <div className="my-3">
-                        <Button darkMode onClick={handleOpenDialog(setOpenProjectDialog)} text="Create New Project" />
+                        <Button onClick={handleOpenDialog(setOpenProjectDialog)}> Create New Project</Button>
                     </div>
                     <h4 className="text-4xl mb-2 italic">Projects</h4>
                     <DataTable
