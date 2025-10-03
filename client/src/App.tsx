@@ -1,36 +1,33 @@
-import CssBaseline from "@mui/material/CssBaseline";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import FormLayout from "./layouts/FormLayout";
-import Layout from "./layouts/Layout";
-import Dashboard from "./pages/Dashboard";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import NoPage from "./pages/NoPage";
+import FormLayout from "./layouts/form-layout";
+import Layout from "./layouts/layout";
+import NoPage from "./pages/404-page";
+import Dashboard from "./pages/dashboard";
+import Home from "./pages/home";
+import Login from "./pages/login";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {
     return (
-        <CssBaseline>
-            <Router>
-                <Layout>
-                    <Routes>
-                        <Route index path="/" element={<Home />} />
-                        <Route
-                            path="/admin/login"
-                            element={
-                                <FormLayout>
-                                    <Login />
-                                </FormLayout>
-                            }
-                        />
-                        <Route path="/admin/dashboard" element={<ProtectedRoutes />}>
-                            <Route path="/admin/dashboard" element={<Dashboard />} />
-                        </Route>
-                        <Route path="*" element={<NoPage />} />
-                    </Routes>
-                </Layout>
-            </Router>
-        </CssBaseline>
+        <Router>
+            <Layout>
+                <Routes>
+                    <Route index path="/" element={<Home />} />
+                    <Route
+                        path="/admin/login"
+                        element={
+                            <FormLayout>
+                                <Login />
+                            </FormLayout>
+                        }
+                    />
+                    <Route path="/admin/dashboard" element={<ProtectedRoutes />}>
+                        <Route path="/admin/dashboard" element={<Dashboard />} />
+                    </Route>
+                    <Route path="*" element={<NoPage />} />
+                </Routes>
+            </Layout>
+        </Router>
     );
 }
 

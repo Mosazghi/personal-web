@@ -1,4 +1,4 @@
-interface RequestProps {
+interface apiFetchProps {
     url: string;
     method: string | "GET" | "POST" | "DELETE" | "PUT";
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -6,7 +6,7 @@ interface RequestProps {
     headers?: Record<string, string>;
 }
 
-const request = async ({ url, method, data, headers }: RequestProps) => {
+export const apiFetch = async ({ url, method, data, headers }: apiFetchProps) => {
     const defaultHeaders = {
         "Content-Type": "application/json",
     };
@@ -31,5 +31,3 @@ const request = async ({ url, method, data, headers }: RequestProps) => {
         return false;
     }
 };
-
-export { request };

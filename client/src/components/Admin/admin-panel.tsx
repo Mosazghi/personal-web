@@ -1,25 +1,17 @@
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Tabs, Tab } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import cookies from "../../utils/cookies";
+import { apiFetch } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
-import Button from "../Button";
-import CreateProjectForm, { Project } from "../Project/ProjectForm";
-import DataTable from "./Table";
-import { projectColumns } from "./columnsData";
-import { request } from "../../utils/fetch";
-
-const tabStyles = {
-    color: "gray",
-    "&.Mui-selected": {
-        color: "whitesmoke",
-    },
-};
+import CreateProjectForm, { Project } from "../Project/project-form";
+import { Button } from "../ui/button";
+import { projectColumns } from "./column-data";
+import DataTable from "./table";
 
 const AdminPanel = () => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [openProjectDialog, setOpenProjectDialog] = useState(false);
     const [editingProject, setEditingProject] = useState<Project | null>(null);
-    const [selectedTab, setSelectedTab] = useState(0); // State to manage the selected tab
+    const [selectedTab, setSelectedTab] = useState(0);
 
     const fetchProjects = useCallback(async () => {
         const config = {
@@ -29,7 +21,7 @@ const AdminPanel = () => {
                 Authorization: `Bearer ${cookies.get("TOKEN")}`,
             },
         };
-        const data = await request(config);
+        const data = await apiFetch(config);
         setProjects(data);
     }, []);
 
@@ -43,7 +35,7 @@ const AdminPanel = () => {
             },
         };
 
-        const success = await request(config);
+        const success = await apiFetch(config);
         if (success) {
             setProjects((prevProjects) => prevProjects.filter((project) => project.id !== id));
         }
@@ -65,12 +57,14 @@ const AdminPanel = () => {
 
     const MemoizedData = (data: Project[]) => useMemo(() => data, [data]);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleOpenDialog = (setOpenDialogFunction: any) => () => {
         setOpenDialogFunction(true);
 
         if (editingProject) setEditingProject(null);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCloseDialog = (setOpenDialogFunction: any) => () => setOpenDialogFunction(false);
 
     const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -78,28 +72,24 @@ const AdminPanel = () => {
     };
 
     return (
-        <Box color={"whitesmoke"} minHeight={"100vh"}>
-            <Tabs
-                value={selectedTab}
-                onChange={handleTabChange}
-                variant="fullWidth"
-                sx={{
-                    "& .MuiTabs-indicator": {
-                        backgroundColor: "whitesmoke",
-                    },
-                }}
-            >
-                <Tab label="Projects" sx={tabStyles} />
-            </Tabs>
+        <div className="min-h-screen">
+            <div className="flex border-b">
+                <button
+                    className={`flex-1 py-3 text-center ${
+                        selectedTab === 0 ? " border-b-2 border-white" : "text-gray-400"
+                    }`}
+                    onClick={(e) => handleTabChange(e, 0)}
+                >
+                    Projects
+                </button>
+            </div>
 
             {selectedTab === 0 && (
                 <>
-                    <Box my={3}>
-                        <Button darkMode onClick={handleOpenDialog(setOpenProjectDialog)} text="Create New Project" />
-                    </Box>
-                    <Typography variant="h4" mb={2} fontStyle={"italic"}>
-                        Projects
-                    </Typography>
+                    <div className="my-3">
+                        <Button onClick={handleOpenDialog(setOpenProjectDialog)}> Create New Project</Button>
+                    </div>
+                    <h4 className="text-4xl mb-2 italic">Projects</h4>
                     <DataTable
                         data={MemoizedData(projects)}
                         columns={projectColumns}
@@ -109,20 +99,28 @@ const AdminPanel = () => {
                 </>
             )}
 
-            <Dialog open={openProjectDialog} onClose={handleCloseDialog(setOpenProjectDialog)} maxWidth="sm" fullWidth>
-                <DialogTitle>{editingProject ? "Edit Project" : "Create New Project"}</DialogTitle>
-                <DialogContent>
-                    <CreateProjectForm
-                        onSuccess={() => handleFormSuccess(fetchProjects, handleCloseDialog(setOpenProjectDialog))}
-                        onError={(message) => alert(message)}
-                        project={editingProject}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog(setOpenProjectDialog)} text="Cancel" />
-                </DialogActions>
-            </Dialog>
-        </Box>
+            {openProjectDialog && (
+                <div className="bg-black fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+                    <div className=" rounded-lg p-6 max-w-sm w-full mx-4 max-h-[90vh] overflow-y-auto">
+                        <h2 className="text-2xl font-semibold mb-4 ">
+                            {editingProject ? "Edit Project" : "Create New Project"}
+                        </h2>
+                        <div className="">
+                            <CreateProjectForm
+                                onSuccess={() =>
+                                    handleFormSuccess(fetchProjects, handleCloseDialog(setOpenProjectDialog))
+                                }
+                                onError={(message) => alert(message)}
+                                project={editingProject}
+                            />
+                        </div>
+                        <div className="mt-4 flex justify-end">
+                            <Button onClick={handleCloseDialog(setOpenProjectDialog)}> Cancel </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 

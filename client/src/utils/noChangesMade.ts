@@ -1,6 +1,6 @@
-import { Project } from "../components/Project/ProjectForm";
+import { Project } from "../components/Project/project-form";
 
-const noChangesMade = (obj: Project | null | undefined, formData?: Object) => {
+const noChangesMade = (obj: Project | null | undefined, formData?: object) => {
     if (obj && JSON.stringify(obj) === JSON.stringify(formData)) {
         return true;
     }
@@ -8,4 +8,3 @@ const noChangesMade = (obj: Project | null | undefined, formData?: Object) => {
 };
 
 export default noChangesMade;
-
