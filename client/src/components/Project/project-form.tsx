@@ -1,11 +1,11 @@
 import { FormEvent, useEffect, useState } from "react";
 import cookies from "../../utils/cookies";
-import { request } from "../../utils/fetch";
+import { apiFetch } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
 import noChangesMade from "../../utils/noChangesMade";
-import Button from "../Button";
-import { ProjectProps } from "./Project";
-import TechStackInput from "./TechStackInput";
+import { Button } from "../ui/button";
+
+import TechStackInput from "./tech-stack-input";
 export interface Project {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
@@ -23,7 +23,8 @@ interface ProjectFormProps {
     onError: (message: string) => void;
     project?: Project | null;
 }
-const defaultProject = {
+const defaultProject: Project = {
+    id: 0,
     name: "",
     description: "",
     showcaseLink: "",
@@ -32,7 +33,7 @@ const defaultProject = {
     techStack: [],
 };
 export default function CreateProjectForm({ onSuccess, onError, project }: ProjectFormProps) {
-    const [formData, setFormData] = useState<ProjectProps>(defaultProject);
+    const [formData, setFormData] = useState<Project>(defaultProject);
 
     useEffect(() => {
         if (project) {
@@ -59,7 +60,7 @@ export default function CreateProjectForm({ onSuccess, onError, project }: Proje
         };
 
         try {
-            const data = await request(config);
+            const data = await apiFetch(config);
 
             if (data) {
                 onSuccess();
@@ -154,11 +155,10 @@ export default function CreateProjectForm({ onSuccess, onError, project }: Proje
                 techStacks={formData.techStack}
                 setTechStacks={(newTechStack: string[]) => setFormData({ ...formData, techStack: newTechStack })}
             />
-            <Button
-                disabled={noChangesMade(project, formData)}
-                type="submit"
-                text={project ? "Update Project" : "Create New Project"}
-            />
+            <Button disabled={noChangesMade(project, formData)} type="submit">
+                {" "}
+                {project ? "Update Project" : "Create Project"}{" "}
+            </Button>
         </form>
     );
 }

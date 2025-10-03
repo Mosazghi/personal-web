@@ -1,10 +1,10 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import FormLayout from "./layouts/FormLayout";
-import Layout from "./layouts/Layout";
-import Dashboard from "./pages/Dashboard";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import NoPage from "./pages/NoPage";
+import FormLayout from "./layouts/form-layout";
+import Layout from "./layouts/layout";
+import NoPage from "./pages/404-page";
+import Dashboard from "./pages/dashboard";
+import Home from "./pages/home";
+import Login from "./pages/login";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {

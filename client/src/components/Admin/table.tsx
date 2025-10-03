@@ -1,5 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { Project } from "../Project/ProjectForm";
+import { Project } from "../Project/project-form";
 
 interface Column {
     headerName: string;
@@ -18,28 +18,29 @@ interface DataTableProps {
 
 const DataTable = ({ data, columns, onDelete, onEdit }: DataTableProps) => {
     return (
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
+        <div className="overflow-x-auto bg rounded-lg shadow">
             <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+                <thead className="">
                     <tr>
                         {columns.map((column) => (
                             <th
                                 key={column.field}
-                                className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                className="px-2 py-2 text-left text-xs font-medium  uppercase tracking-wider"
                             >
                                 {column.headerName}
                             </th>
                         ))}
-                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                        </th>
+                        <th className="px-2 py-2 text-left text-xs font-medium  uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className=" divide-y divide-gray-200">
                     {data.map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50">
+                        <tr key={item.id}>
                             {columns.map((column) => (
-                                <td key={column.field} className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
+                                <td
+                                    key={column.field}
+                                    className="px-2 py-2 whitespace-nowrap text-sm  max-w-24 text-ellipsis overflow-hidden"
+                                >
                                     {column.link ? (
                                         <a
                                             href={item[column.field]}
@@ -59,14 +60,14 @@ const DataTable = ({ data, columns, onDelete, onEdit }: DataTableProps) => {
                             <td className="px-2 py-2 whitespace-nowrap text-sm">
                                 <button
                                     onClick={() => onEdit(item)}
-                                    className="p-2 hover:bg-gray-200 rounded-full inline-flex items-center"
+                                    className="p-2  rounded-full inline-flex items-center"
                                     aria-label="Edit"
                                 >
                                     <Pencil className="h-5 w-5 text-blue-700" />
                                 </button>
                                 <button
                                     onClick={() => onDelete(item.id)}
-                                    className="p-2 hover:bg-gray-200 rounded-full inline-flex items-center ml-2"
+                                    className="p-2  rounded-full inline-flex items-center ml-2"
                                     aria-label="Delete"
                                 >
                                     <Trash2 className="h-5 w-5 text-red-700" />

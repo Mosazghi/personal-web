@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import cookies from "../../utils/cookies";
-import { request } from "../../utils/fetch";
+import { apiFetch } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
+import CreateProjectForm, { Project } from "../Project/project-form";
 import { Button } from "../ui/button";
-import CreateProjectForm, { Project } from "../Project/ProjectForm";
-import DataTable from "./Table";
-import { projectColumns } from "./columnsData";
+import { projectColumns } from "./column-data";
+import DataTable from "./table";
 
 const AdminPanel = () => {
     const [projects, setProjects] = useState<Project[]>([]);
@@ -21,7 +21,7 @@ const AdminPanel = () => {
                 Authorization: `Bearer ${cookies.get("TOKEN")}`,
             },
         };
-        const data = await request(config);
+        const data = await apiFetch(config);
         setProjects(data);
     }, []);
 
@@ -35,7 +35,7 @@ const AdminPanel = () => {
             },
         };
 
-        const success = await request(config);
+        const success = await apiFetch(config);
         if (success) {
             setProjects((prevProjects) => prevProjects.filter((project) => project.id !== id));
         }
@@ -57,12 +57,14 @@ const AdminPanel = () => {
 
     const MemoizedData = (data: Project[]) => useMemo(() => data, [data]);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleOpenDialog = (setOpenDialogFunction: any) => () => {
         setOpenDialogFunction(true);
 
         if (editingProject) setEditingProject(null);
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleCloseDialog = (setOpenDialogFunction: any) => () => setOpenDialogFunction(false);
 
     const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -70,11 +72,11 @@ const AdminPanel = () => {
     };
 
     return (
-        <div className="text-white min-h-screen">
-            <div className="flex border-b border-white">
+        <div className="min-h-screen">
+            <div className="flex border-b">
                 <button
                     className={`flex-1 py-3 text-center ${
-                        selectedTab === 0 ? "text-white border-b-2 border-white" : "text-gray-400"
+                        selectedTab === 0 ? " border-b-2 border-white" : "text-gray-400"
                     }`}
                     onClick={(e) => handleTabChange(e, 0)}
                 >
@@ -98,12 +100,12 @@ const AdminPanel = () => {
             )}
 
             {openProjectDialog && (
-                <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 max-h-[90vh] overflow-y-auto">
-                        <h2 className="text-2xl font-semibold mb-4 text-black">
+                <div className="bg-black fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+                    <div className=" rounded-lg p-6 max-w-sm w-full mx-4 max-h-[90vh] overflow-y-auto">
+                        <h2 className="text-2xl font-semibold mb-4 ">
                             {editingProject ? "Edit Project" : "Create New Project"}
                         </h2>
-                        <div className="text-black">
+                        <div className="">
                             <CreateProjectForm
                                 onSuccess={() =>
                                     handleFormSuccess(fetchProjects, handleCloseDialog(setOpenProjectDialog))
@@ -113,7 +115,7 @@ const AdminPanel = () => {
                             />
                         </div>
                         <div className="mt-4 flex justify-end">
-                            <Button onClick={handleCloseDialog(setOpenProjectDialog)} text="Cancel" />
+                            <Button onClick={handleCloseDialog(setOpenProjectDialog)}> Cancel </Button>
                         </div>
                     </div>
                 </div>

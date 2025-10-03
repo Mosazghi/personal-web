@@ -1,4 +1,4 @@
-const LoadingStatus = ({ message }: { message: string }) => {
+const Loading = ({ message }: { message: string }) => {
     return (
         <div className="flex flex-row justify-center items-center gap-2 text-gray-400">
             <h6 className="text-xl font-medium text-inherit">{message}</h6>
@@ -12,4 +12,4 @@ const LoadingStatus = ({ message }: { message: string }) => {
     );
 };
 
-export default LoadingStatus;
+export default Loading;
