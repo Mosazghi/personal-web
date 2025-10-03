@@ -1,16 +1,6 @@
-import { Delete as DeleteIcon, Edit as EditIcon } from "@mui/icons-material";
-import {
-    IconButton,
-    Link,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-} from "@mui/material";
+import { Pencil, Trash2 } from "lucide-react";
 import { Project } from "../Project/ProjectForm";
+
 interface Column {
     headerName: string;
     field: string;
@@ -28,45 +18,65 @@ interface DataTableProps {
 
 const DataTable = ({ data, columns, onDelete, onEdit }: DataTableProps) => {
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ "& .MuiTableCell-sizeMedium": { padding: "5px 5px" } }}>
-                <TableHead>
-                    <TableRow>
+        <div className="overflow-x-auto bg-white rounded-lg shadow">
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                    <tr>
                         {columns.map((column) => (
-                            <TableCell key={column.field}>{column.headerName}</TableCell>
+                            <th
+                                key={column.field}
+                                className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                                {column.headerName}
+                            </th>
                         ))}
-                        <TableCell>Actions</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+                        <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
                     {data.map((item) => (
-                        <TableRow key={item.id}>
+                        <tr key={item.id} className="hover:bg-gray-50">
                             {columns.map((column) => (
-                                <TableCell key={column.field}>
+                                <td key={column.field} className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">
                                     {column.link ? (
-                                        <Link href={item[column.field]} target="_blank" rel="noopener noreferrer">
+                                        <a
+                                            href={item[column.field]}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-blue-600 hover:underline"
+                                        >
                                             {item[column.field]}
-                                        </Link>
+                                        </a>
                                     ) : column.array ? (
                                         item[column.field].join(", ")
                                     ) : (
                                         item[column.field]
                                     )}
-                                </TableCell>
+                                </td>
                             ))}
-                            <TableCell>
-                                <IconButton onClick={() => onEdit(item)} color="primary">
-                                    <EditIcon sx={{ color: "darkblue" }} />
-                                </IconButton>
-                                <IconButton onClick={() => onDelete(item.id)} color="secondary">
-                                    <DeleteIcon sx={{ color: "darkred" }} />
-                                </IconButton>
-                            </TableCell>
-                        </TableRow>
+                            <td className="px-2 py-2 whitespace-nowrap text-sm">
+                                <button
+                                    onClick={() => onEdit(item)}
+                                    className="p-2 hover:bg-gray-200 rounded-full inline-flex items-center"
+                                    aria-label="Edit"
+                                >
+                                    <Pencil className="h-5 w-5 text-blue-700" />
+                                </button>
+                                <button
+                                    onClick={() => onDelete(item.id)}
+                                    className="p-2 hover:bg-gray-200 rounded-full inline-flex items-center ml-2"
+                                    aria-label="Delete"
+                                >
+                                    <Trash2 className="h-5 w-5 text-red-700" />
+                                </button>
+                            </td>
+                        </tr>
                     ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                </tbody>
+            </table>
+        </div>
     );
 };
 

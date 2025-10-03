@@ -1,34 +1,10 @@
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { blueGrey } from "@mui/material/colors";
+import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import cookies from "../utils/cookies";
-import getApiPath from "../utils/getApiPath";
 import { request } from "../utils/fetch";
-import { useState } from "react";
-const inputStyles = {
-    "& .MuiOutlinedInput-root": {
-        "& fieldset": {
-            borderColor: "white",
-        },
-        "&:hover fieldset": {
-            borderColor: "white",
-        },
-        "&.Mui-focused fieldset": {
-            borderColor: "white",
-        },
-    },
-    "& .MuiInputBase-input": {
-        color: "white",
-    },
-    "& .MuiInputLabel-root": {
-        color: "white",
-    },
-};
+import getApiPath from "../utils/getApiPath";
+
 export default function Login() {
     const [error, setError] = useState<string>("");
     const authUrl = getApiPath() + import.meta.env.VITE_ADMIN_LOGIN_URL;
@@ -67,75 +43,38 @@ export default function Login() {
     }
 
     return (
-        <Container
-            component="main"
-            maxWidth="xs"
-            sx={{
-                backgroundColor: "inherit",
-                border: "2px solid white",
-                borderRadius: "20px",
-                label: {
-                    color: "white",
-                    "& .Mui-focused": {
-                        color: "white",
-                    },
-                },
-            }}
-        >
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
-            >
-                <Typography component="h1" variant="h5" color="white">
-                    Sign in
-                </Typography>
-                <Box component="hr" sx={{ width: "90%", borderColor: "white" }} />
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ width: "90%", mt: 1, mb: 1 }}>
-                    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                        <Typography variant="body1" sx={{ py: 1 }}>
-                            Username
-                        </Typography>
-                        <TextField
-                            variant="outlined"
+        <div className="max-w-xs w-full bg-inherit border-2 border-white rounded-[20px]">
+            <div className="mt-8 flex flex-col items-center">
+                <h1 className="text-xl text-white">Sign in</h1>
+                <hr className="w-[90%] border-white" />
+                <form onSubmit={handleSubmit} noValidate className="w-[90%] mt-1 mb-1">
+                    <div className="flex flex-col justify-center">
+                        <p className="py-1 text-white">Username</p>
+                        <input
                             type="text"
                             name="username"
                             placeholder="username"
-                            fullWidth
                             required
-                            sx={inputStyles}
+                            className="w-full px-3 py-2 border border-white bg-transparent text-white rounded-md placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white"
                         />
-                    </Box>
-                    <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }} mb={3}>
-                        <Typography variant="body1" sx={{ py: 1 }}>
-                            Password
-                        </Typography>
-                        <TextField
-                            variant="outlined"
+                    </div>
+                    <div className="flex flex-col justify-center mb-3">
+                        <p className="py-1 text-white">Password</p>
+                        <input
                             type="password"
                             name="password"
                             placeholder="password"
-                            fullWidth
                             required
-                            sx={inputStyles}
+                            className="w-full px-3 py-2 border border-white bg-transparent text-white rounded-md placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white"
                         />
-                    </Box>
-                    {error && (
-                        <Typography variant="body1" color="error" mb={2} mt={-1}>
-                            {error}
-                        </Typography>
-                    )}
+                    </div>
+                    {error && <p className="text-red-500 mb-2 -mt-1">{error}</p>}
                     <Button type="submit" fullWidth darkMode text={loading ? "Loading..." : "Sign in"} />
-                    <Link href="/" variant="body1" textAlign={"end"} underline="none">
-                        <Typography color={blueGrey[200]} mt={2}>
-                            Return to portfolio
-                        </Typography>
-                    </Link>
-                </Box>
-            </Box>
-        </Container>
+                    <a href="/" className="no-underline">
+                        <p className="text-blue-gray-200 mt-2 text-right">Return to portfolio</p>
+                    </a>
+                </form>
+            </div>
+        </div>
     );
 }

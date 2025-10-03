@@ -1,9 +1,3 @@
-// create a map with link name and url
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
-import { blueGrey } from "@mui/material/colors";
 const links = [
     { name: "Github", url: "https://github.com/Mosazghi" },
     { name: "Linkedin", url: "https://www.linkedin.com/in/mosazghi-tesfazghi-8275a6275/" },
@@ -12,33 +6,24 @@ const links = [
 
 const Footer = () => {
     return (
-        <Box
-            component="footer"
-            sx={{
-                position: "fixed",
-                bottom: "0px",
-                left: "0px",
-                width: "100%",
-                backdropFilter: "blur(10px)",
-            }}
-        >
-            <Box sx={{ mx: "auto", width: "min-content", textAlign: "center" }}>
-                <List sx={{ display: "flex", justifyContent: "center" }}>
+        <footer className="fixed bottom-0 left-0 w-full backdrop-blur-[10px]">
+            <div className="mx-auto w-min text-center">
+                <ul className="flex justify-center list-none p-0">
                     {links.map((link, i) => (
-                        <ListItem key={i} sx={{ widht: "auto" }}>
-                            <Link
-                                sx={{ textDecoration: "none", color: blueGrey[50] }}
-                                underline="hover"
+                        <li key={i} className="w-auto px-4">
+                            <a
+                                className="no-underline text-blue-gray-50 hover:underline"
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 href={link.url}
                             >
                                 {link.name}
-                            </Link>
-                        </ListItem>
+                            </a>
+                        </li>
                     ))}
-                </List>
-            </Box>
-        </Box>
+                </ul>
+            </div>
+        </footer>
     );
 };
 

@@ -1,13 +1,14 @@
-import { CircularProgress, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
 const LoadingStatus = ({ message }: { message: string }) => {
     return (
-        <Stack sx={{ color: "grey.400" }} spacing={2} direction="row" justifyContent="center" alignItems="center">
-            <Typography variant="h6" color={"inherit"}>
-                {message}
-            </Typography>
-            <CircularProgress size={18} color="inherit" />
-        </Stack>
+        <div className="flex flex-row justify-center items-center gap-2 text-gray-400">
+            <h6 className="text-xl font-medium text-inherit">{message}</h6>
+            <div
+                className="inline-block h-[18px] w-[18px] animate-spin rounded-full border-2 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                role="status"
+            >
+                <span className="sr-only">Loading...</span>
+            </div>
+        </div>
     );
 };
 

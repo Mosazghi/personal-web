@@ -1,25 +1,17 @@
-import { Box, Grid, Link, Typography } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
 import { useEffect, useState } from "react";
+import { request } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
 import LoadingStatus from "../LoadingStatus";
 import Project, { ProjectProps } from "./Project";
-import { request } from "../../utils/fetch";
 
 const NoProjects = () => {
     return (
-        <Typography
-            variant="h5"
-            textAlign="center"
-            sx={{ fontSize: { xs: "1.2rem", md: "1.6rem" } }}
-            color={blueGrey[200]}
-            gutterBottom
-        >
+        <p className="text-center text-[1.2rem] md:text-[1.6rem] text-blue-gray-200">
             Coming soon... In the meantime check out my{" "}
-            <Link href="https://github.com/Mosazghi" underline="hover" color="white">
+            <a href="https://github.com/Mosazghi" className="underline text-white hover:no-underline">
                 github account
-            </Link>
-        </Typography>
+            </a>
+        </p>
     );
 };
 
@@ -52,19 +44,19 @@ const ProjectList = () => {
     }
 
     return (
-        <Box component="section" py={3} sx={{ color: "white" }}>
-            <Grid container spacing={2} alignItems="start" justifyContent="center">
+        <section className="py-3 text-white">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-2 items-start justify-center">
                 {projects.length > 0 ? (
                     projects.map((project, index: number) => (
-                        <Grid component={"article"} item xs={12} sm={6} md={5} key={index}>
+                        <article key={index} className="w-full">
                             <Project {...project} />
-                        </Grid>
+                        </article>
                     ))
                 ) : (
                     <p>No featured projects at this time. </p>
                 )}
-            </Grid>
-        </Box>
+            </div>
+        </section>
     );
 };
 

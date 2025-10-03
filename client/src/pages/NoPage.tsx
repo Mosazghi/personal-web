@@ -1,21 +1,11 @@
-import { Box, Typography } from "@mui/material";
-import Link from "@mui/material/Link";
 function NoPage() {
     return (
-        <Box
-            sx={{ height: "100vh", textAlign: "center" }}
-            display={"flex"}
-            flexDirection={"column"}
-            justifyContent={"center"}
-            alignItems={"center"}
-        >
-            <Typography variant="h2" color={"error.main"}>
-                Page not found
-            </Typography>
-            <Link href="/" variant="body1" underline="hover">
+        <div className="h-screen text-center flex flex-col justify-center items-center">
+            <h2 className="text-4xl text-red-500">Page not found</h2>
+            <a href="/" className="text-blue-600 hover:underline">
                 Go back to portfolio
-            </Link>
-        </Box>
+            </a>
+        </div>
     );
 }
 

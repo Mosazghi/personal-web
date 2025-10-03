@@ -1,10 +1,8 @@
+import { Home, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography } from "@mui/material";
 import AdminPanel from "../components/Admin/AdminPanel";
 import cookies from "../utils/cookies";
-import LogoutIcon from "@mui/icons-material/Logout";
-import IconButton from "@mui/material/IconButton";
-import HomeIcon from "@mui/icons-material/Home";
+
 function Dashboard() {
     const navigate = useNavigate();
     const handleLogout = () => {
@@ -13,26 +11,20 @@ function Dashboard() {
     };
 
     return (
-        <Box py={2}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 5 }}>
-                <Typography
-                    variant="h1"
-                    color="white"
-                    sx={{ fontSize: { xs: "2.5rem", md: "4rem" }, textAlign: "center" }}
-                >
-                    Dashboard
-                </Typography>
-                <Box minWidth={"80px"}>
-                    <IconButton href="/" color="primary">
-                        <HomeIcon sx={{ color: "whitesmoke" }} />
-                    </IconButton>
-                    <IconButton onClick={handleLogout} color="primary">
-                        <LogoutIcon sx={{ color: "whitesmoke" }} />
-                    </IconButton>
-                </Box>
-            </Box>
+        <div className="py-2">
+            <div className="flex justify-between items-center mb-5">
+                <h1 className="text-white text-[2.5rem] md:text-[4rem] text-center">Dashboard</h1>
+                <div className="min-w-[80px]">
+                    <a href="/" className="p-2 inline-block">
+                        <Home className="h-6 w-6 text-white" />
+                    </a>
+                    <button onClick={handleLogout} className="p-2 inline-block">
+                        <LogOut className="h-6 w-6 text-white" />
+                    </button>
+                </div>
+            </div>
             <AdminPanel />
-        </Box>
+        </div>
     );
 }
 

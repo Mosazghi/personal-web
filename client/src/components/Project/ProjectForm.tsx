@@ -1,12 +1,11 @@
-import { useState, useEffect, FormEvent } from "react";
-import { Box, TextField } from "@mui/material";
-import getApiPath from "../../utils/getApiPath";
-import Button from "../Button";
+import { FormEvent, useEffect, useState } from "react";
 import cookies from "../../utils/cookies";
-import TechStackInput from "./TechStackInput";
-import { ProjectProps } from "./Project";
 import { request } from "../../utils/fetch";
+import getApiPath from "../../utils/getApiPath";
 import noChangesMade from "../../utils/noChangesMade";
+import Button from "../Button";
+import { ProjectProps } from "./Project";
+import TechStackInput from "./TechStackInput";
 export interface Project {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
@@ -75,7 +74,7 @@ export default function CreateProjectForm({ onSuccess, onError, project }: Proje
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -84,50 +83,82 @@ export default function CreateProjectForm({ onSuccess, onError, project }: Proje
     };
 
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField
-                label="Project name"
-                name="name"
-                sx={{ mt: 1 }}
-                value={formData.name}
-                onChange={handleChange}
-                required
-            />
-            <TextField
-                label="Description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-                multiline
-                rows={4}
-            />
-            <TextField
-                label="Repository link"
-                name="repositoryLink"
-                value={formData.repositoryLink}
-                onChange={handleChange}
-                required
-            />
-            <TextField
-                label="Preview link"
-                name="previewLink"
-                value={formData.previewLink}
-                onChange={handleChange}
-                required
-            />
-            <TextField
-                label="Showcase link"
-                name="showcaseLink"
-                value={formData.showcaseLink}
-                onChange={handleChange}
-                required
-            />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
+                <label htmlFor="name" className="text-sm font-medium">
+                    Project name
+                </label>
+                <input
+                    id="name"
+                    name="name"
+                    className="mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="description" className="text-sm font-medium">
+                    Description
+                </label>
+                <textarea
+                    id="description"
+                    name="description"
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                    rows={4}
+                />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="repositoryLink" className="text-sm font-medium">
+                    Repository link
+                </label>
+                <input
+                    id="repositoryLink"
+                    name="repositoryLink"
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.repositoryLink}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="previewLink" className="text-sm font-medium">
+                    Preview link
+                </label>
+                <input
+                    id="previewLink"
+                    name="previewLink"
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.previewLink}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div className="flex flex-col gap-1">
+                <label htmlFor="showcaseLink" className="text-sm font-medium">
+                    Showcase link
+                </label>
+                <input
+                    id="showcaseLink"
+                    name="showcaseLink"
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={formData.showcaseLink}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
             <TechStackInput
                 techStacks={formData.techStack}
                 setTechStacks={(newTechStack: string[]) => setFormData({ ...formData, techStack: newTechStack })}
             />
-            <Button disabled={noChangesMade(project, formData)} type="submit" text={project ? "Update Project" : "Create New Project"} />
-        </Box>
+            <Button
+                disabled={noChangesMade(project, formData)}
+                type="submit"
+                text={project ? "Update Project" : "Create New Project"}
+            />
+        </form>
     );
 }

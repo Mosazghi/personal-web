@@ -1,25 +1,17 @@
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Tabs, Tab } from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import cookies from "../../utils/cookies";
+import { request } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
 import Button from "../Button";
 import CreateProjectForm, { Project } from "../Project/ProjectForm";
 import DataTable from "./Table";
 import { projectColumns } from "./columnsData";
-import { request } from "../../utils/fetch";
-
-const tabStyles = {
-    color: "gray",
-    "&.Mui-selected": {
-        color: "whitesmoke",
-    },
-};
 
 const AdminPanel = () => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [openProjectDialog, setOpenProjectDialog] = useState(false);
     const [editingProject, setEditingProject] = useState<Project | null>(null);
-    const [selectedTab, setSelectedTab] = useState(0); // State to manage the selected tab
+    const [selectedTab, setSelectedTab] = useState(0);
 
     const fetchProjects = useCallback(async () => {
         const config = {
@@ -78,28 +70,24 @@ const AdminPanel = () => {
     };
 
     return (
-        <Box color={"whitesmoke"} minHeight={"100vh"}>
-            <Tabs
-                value={selectedTab}
-                onChange={handleTabChange}
-                variant="fullWidth"
-                sx={{
-                    "& .MuiTabs-indicator": {
-                        backgroundColor: "whitesmoke",
-                    },
-                }}
-            >
-                <Tab label="Projects" sx={tabStyles} />
-            </Tabs>
+        <div className="text-white min-h-screen">
+            <div className="flex border-b border-white">
+                <button
+                    className={`flex-1 py-3 text-center ${
+                        selectedTab === 0 ? "text-white border-b-2 border-white" : "text-gray-400"
+                    }`}
+                    onClick={(e) => handleTabChange(e, 0)}
+                >
+                    Projects
+                </button>
+            </div>
 
             {selectedTab === 0 && (
                 <>
-                    <Box my={3}>
+                    <div className="my-3">
                         <Button darkMode onClick={handleOpenDialog(setOpenProjectDialog)} text="Create New Project" />
-                    </Box>
-                    <Typography variant="h4" mb={2} fontStyle={"italic"}>
-                        Projects
-                    </Typography>
+                    </div>
+                    <h4 className="text-4xl mb-2 italic">Projects</h4>
                     <DataTable
                         data={MemoizedData(projects)}
                         columns={projectColumns}
@@ -109,20 +97,28 @@ const AdminPanel = () => {
                 </>
             )}
 
-            <Dialog open={openProjectDialog} onClose={handleCloseDialog(setOpenProjectDialog)} maxWidth="sm" fullWidth>
-                <DialogTitle>{editingProject ? "Edit Project" : "Create New Project"}</DialogTitle>
-                <DialogContent>
-                    <CreateProjectForm
-                        onSuccess={() => handleFormSuccess(fetchProjects, handleCloseDialog(setOpenProjectDialog))}
-                        onError={(message) => alert(message)}
-                        project={editingProject}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog(setOpenProjectDialog)} text="Cancel" />
-                </DialogActions>
-            </Dialog>
-        </Box>
+            {openProjectDialog && (
+                <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4 max-h-[90vh] overflow-y-auto">
+                        <h2 className="text-2xl font-semibold mb-4 text-black">
+                            {editingProject ? "Edit Project" : "Create New Project"}
+                        </h2>
+                        <div className="text-black">
+                            <CreateProjectForm
+                                onSuccess={() =>
+                                    handleFormSuccess(fetchProjects, handleCloseDialog(setOpenProjectDialog))
+                                }
+                                onError={(message) => alert(message)}
+                                project={editingProject}
+                            />
+                        </div>
+                        <div className="mt-4 flex justify-end">
+                            <Button onClick={handleCloseDialog(setOpenProjectDialog)} text="Cancel" />
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 
