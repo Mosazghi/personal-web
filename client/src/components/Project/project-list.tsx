@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import isMobileDevice from "~/utils/isMobileDevice";
 import { apiFetch } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
-import Loading from "../loading";
 import { SectionHeader } from "../section-header";
 import { Project, ProjectProps } from "./project";
 import { Skeleton } from "../ui/skeleton";
