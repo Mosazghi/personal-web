@@ -40,8 +40,8 @@ export function Hero() {
 
     return (
         <section className="min-h-screen flex items-center justify-center lg:ml-80 px-6 lg:px-12">
-            <div className="flex flex-col justify-content-between h-full">
-                <Link to="/admin/login" className="text-sm text-muted-foreground mb-4 inline-block hover:underline">
+            <div className="flex flex-col justify-items-center h-full">
+                <Link to="/admin/login" className="text-sm text-muted-foreground mb-4 inline-block">
                     <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-balance">Mosazghi Y. Tesfazghi</h1>
                 </Link>
 
@@ -52,7 +52,7 @@ export function Hero() {
                     </h2>
                 </div>
 
-                <div className=" self-center text-lg text-muted-foreground leading-relaxed text-balance">
+                <div className="mt-20 self-center text-lg text-muted-foreground leading-relaxed text-balance">
                     <Button
                         onClick={() => {
                             const experienceSection = document.getElementById("experience");
@@ -63,7 +63,7 @@ export function Hero() {
                         className="flex gap-2 py-4 px-2 items-center justify-content-between"
                         variant={"outline"}
                     >
-                        <p>Explore My Work Experience</p>
+                        <p>Work Experience</p>
                         <ArrowDown className="block size-5 animate-bounce" />
                     </Button>
                 </div>

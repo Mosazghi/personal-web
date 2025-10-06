@@ -1,4 +1,5 @@
-import { MoveRight } from "lucide-react";
+import { ImageOff, MoveRight } from "lucide-react";
+import { useState } from "react";
 export interface Project {
     id: number;
     name: string;
@@ -22,16 +23,20 @@ export interface ProjectProps {
 export const Project = ({ name, index, isMobile, description, showcaseLink, previewLink, techStack }: ProjectProps) => {
     const split = showcaseLink.split("|");
     showcaseLink = !isMobile ? split[0] : split[1]; // mp4. | .gif
+    const [mediaErr, setMediaErr] = useState(false);
     return (
         <div key={index} className="group grid lg:grid-cols-2 gap-8 items-center">
             <div className={`${index % 2 === 1 ? "lg:order-2" : ""}`}>
-                <div className="aspect-video rounded-lg overflow-hidden bg-card border border-border">
-                    {isMobile ? (
+                <div className="aspect-video rounded-lg overflow-hidden bg-card border border-border ">
+                    {mediaErr ? (
+                        <ImageOff className="size-12 mx-auto h-full text-muted-foreground" />
+                    ) : isMobile ? (
                         <img
                             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                             onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                             src={showcaseLink}
                             alt={name}
+                            onError={() => setMediaErr(true)}
                         />
                     ) : (
                         <video
@@ -42,6 +47,7 @@ export const Project = ({ name, index, isMobile, description, showcaseLink, prev
                             loop
                             muted
                             disablePictureInPicture
+                            onError={() => setMediaErr(true)}
                         />
                     )}
                 </div>
