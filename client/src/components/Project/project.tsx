@@ -30,7 +30,7 @@ export const Project = ({ name, index, isMobile, description, showcaseLink, prev
                 <div className="aspect-video rounded-lg overflow-hidden bg-card border border-border ">
                     {mediaErr ? (
                         <ImageOff className="size-12 mx-auto h-full text-muted-foreground" />
-                    ) : isMobile ? (
+                    ) : isMobile || showcaseLink.endsWith(".png") || showcaseLink.endsWith(".jpg") ? (
                         <img
                             className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                             onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
