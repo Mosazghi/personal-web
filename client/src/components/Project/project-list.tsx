@@ -1,23 +1,23 @@
+"use client";
 import { ArrowUpRightSquare } from "lucide-react";
 import { useEffect, useState } from "react";
 import isMobileDevice from "~/utils/isMobileDevice";
 import { apiFetch } from "../../utils/fetch";
 import getApiPath from "../../utils/getApiPath";
 import { SectionHeader } from "../section-header";
-import { Project, ProjectProps } from "./project";
 import { Skeleton } from "../ui/skeleton";
+import { Project, ProjectProps } from "./project";
 
 const ProjectList = () => {
     const [projects, setProjects] = useState<ProjectProps[]>([]);
     const [loading, setLoading] = useState(true);
-    console.log("url", getApiPath() + import.meta.env.VITE_PROJECTS_URL);
 
     const isMobile = isMobileDevice();
 
     useEffect(() => {
         const config = {
             method: "GET",
-            url: getApiPath() + import.meta.env.VITE_PROJECTS_URL,
+            url: getApiPath() + (process.env.NEXT_PUBLIC_PROJECTS_URL || ""),
         };
 
         setLoading(true);

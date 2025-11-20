@@ -1,7 +1,7 @@
 const getApiPath = () => {
-    return import.meta.env.VITE_ENV === "production"
-        ? import.meta.env.VITE_PROD_BASE_URL
-        : import.meta.env.VITE_DEV_BASE_URL;
+    return process.env.NEXT_PUBLIC_ENV === "production"
+        ? process.env.NEXT_PUBLIC_PROD_BASE_URL
+        : process.env.NEXT_PUBLIC_DEV_BASE_URL;
 };
 
 export default getApiPath;
