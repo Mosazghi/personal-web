@@ -55,7 +55,7 @@ export default function CreateProjectForm({ onSuccess, onError, project }: Proje
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${cookies.get("TOKEN")}`,
             },
-            url: getApiPath() + import.meta.env.VITE_PROJECTS_URL + (project ? `/${project.id}` : ""),
+            url: getApiPath() + (process.env.NEXT_PUBLIC_PROJECTS_URL || "") + (project ? `/${project.id}` : ""),
             data: formData,
         };
 

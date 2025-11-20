@@ -1,5 +1,7 @@
+"use client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "~/components/ui/button";
 import cookies from "../utils/cookies";
 import { apiFetch } from "../utils/fetch";
@@ -7,9 +9,9 @@ import getApiPath from "../utils/getApiPath";
 
 export default function Login() {
     const [error, setError] = useState<string>("");
-    const authUrl = getApiPath() + import.meta.env.VITE_ADMIN_LOGIN_URL;
+    const authUrl = getApiPath() + (process.env.NEXT_PUBLIC_ADMIN_LOGIN_URL || "");
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -27,7 +29,7 @@ export default function Login() {
             .then((data) => {
                 if (data) {
                     cookies.set("TOKEN", data.token, { path: "/" });
-                    navigate("/admin/dashboard");
+                    router.push("/admin/dashboard");
                 } else {
                     setError("Invalid credentials");
                 }
@@ -39,7 +41,8 @@ export default function Login() {
     };
 
     if (cookies.get("TOKEN")) {
-        return <Navigate to="/admin/dashboard" />;
+        router.push("/admin/dashboard");
+        return null;
     }
 
     return (
@@ -70,7 +73,7 @@ export default function Login() {
                     </div>
                     {error && <p className="text-red-500 mb-2 -mt-1">{error}</p>}
                     <Button type="submit">{loading ? "Loading..." : "Sign in"}</Button>
-                    <Link to="/" className="no-underline">
+                    <Link href="/" className="no-underline">
                         <p className="text-blue-gray-200 mt-2 text-right">Return to portfolio</p>
                     </Link>
                 </form>

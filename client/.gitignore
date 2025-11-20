@@ -1,4 +1,9 @@
 # Logs
+.next 
+# next stuff
+.ouput
+.next/cache
+.next/trace
 logs
 *.log
 npm-debug.log*

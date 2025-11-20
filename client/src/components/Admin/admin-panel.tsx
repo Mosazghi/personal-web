@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import cookies from "../../utils/cookies";
 import { apiFetch } from "../../utils/fetch";
@@ -16,7 +17,7 @@ const AdminPanel = () => {
     const fetchProjects = useCallback(async () => {
         const config = {
             method: "GET",
-            url: getApiPath() + import.meta.env.VITE_PROJECTS_URL,
+            url: getApiPath() + (process.env.NEXT_PUBLIC_PROJECTS_URL || ""),
             headers: {
                 Authorization: `Bearer ${cookies.get("TOKEN")}`,
             },
@@ -29,7 +30,7 @@ const AdminPanel = () => {
         if (!window.confirm("Are you sure you want to delete this project?")) return;
         const config = {
             method: "DELETE",
-            url: getApiPath() + import.meta.env.VITE_PROJECTS_URL + `/${id}`,
+            url: getApiPath() + (process.env.NEXT_PUBLIC_PROJECTS_URL || "") + `/${id}`,
             headers: {
                 Authorization: `Bearer ${cookies.get("TOKEN")}`,
             },

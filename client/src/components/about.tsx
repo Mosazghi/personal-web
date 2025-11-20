@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { apiFetch } from "~/utils/fetch";
 import Loading from "./loading";
