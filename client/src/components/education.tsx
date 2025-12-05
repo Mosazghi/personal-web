@@ -21,7 +21,7 @@ export function Education() {
     ];
 
     return (
-        <section id="education" className="py-32 border-t border-border">
+        <section id="education" className="py-32 border-t border-border px-8">
             <div className="lg:ml-80 space-y-12">
                 <SectionHeader title="Education" />
                 {education.map((edu, index) => (

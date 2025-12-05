@@ -30,12 +30,12 @@ const ProjectList = () => {
     }, []);
 
     return (
-        <section id="projects" className="py-32 border-t border-border">
+        <section id="projects" className="py-32 border-t border-border px-8">
             <div className="lg:ml-80 grid gap-12">
                 <SectionHeader title="Featured Projects" />
                 {loading &&
                     Array.from({ length: 3 }).map((_, index) => <LoadingProjectsSkeleton index={index} key={index} />)}
-                {projects.length === 0 && <NoProjects />}
+                {!loading && projects.length === 0 && <NoProjects />}
                 {projects.length > 0 &&
                     projects
                         .reverse()

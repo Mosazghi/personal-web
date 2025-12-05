@@ -1,7 +1,6 @@
 "use client";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { Menu, Moon, Sun, X } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { contactLinks } from "~/data";
 import { Button } from "./ui/button";
@@ -19,7 +18,6 @@ const sections = [
 export const Navigation = () => {
     const [activeSection, setActiveSection] = useState("about");
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const { theme, setTheme } = useTheme();
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -90,33 +88,6 @@ export const Navigation = () => {
                             </a>
                         ))}
                     </div>
-
-                    {/*Theme Logic  */}
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                                {theme === "light" ? <Sun className="size-5" /> : <Moon className="size-5" />}
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-2">
-                            <div className="flex flex-col gap-2">
-                                <Button
-                                    variant={theme === "light" ? "default" : "ghost"}
-                                    onClick={() => setTheme("light")}
-                                    className="w-full justify-start"
-                                >
-                                    <Sun className="size-5" />
-                                </Button>
-                                <Button
-                                    variant={theme === "dark" ? "default" : "ghost"}
-                                    onClick={() => setTheme("dark")}
-                                    className="w-full justify-start"
-                                >
-                                    <Moon className="size-5" />
-                                </Button>
-                            </div>
-                        </PopoverContent>
-                    </Popover>
                 </div>
             </nav>
 
@@ -124,31 +95,6 @@ export const Navigation = () => {
                 <div className="flex items-center justify-between p-4">
                     <h1 className="text-lg font-bold">Mosazghi Y. Tesfazghi</h1>
                     <div>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                    {theme === "light" ? <Sun className="size-5" /> : <Moon className="size-5" />}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-2">
-                                <div className="flex flex-col gap-2">
-                                    <Button
-                                        variant={theme === "light" ? "default" : "ghost"}
-                                        onClick={() => setTheme("light")}
-                                        className="w-full justify-start"
-                                    >
-                                        <Sun className="size-5" />
-                                    </Button>
-                                    <Button
-                                        variant={theme === "dark" ? "default" : "ghost"}
-                                        onClick={() => setTheme("dark")}
-                                        className="w-full justify-start"
-                                    >
-                                        <Moon className="size-5" />
-                                    </Button>
-                                </div>
-                            </PopoverContent>
-                        </Popover>
                         <Button
                             variant={"ghost"}
                             size={"icon"}

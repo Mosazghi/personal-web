@@ -28,7 +28,7 @@ export function Experience() {
     ];
 
     return (
-        <section id="experience" className="py-32 border-t border-border">
+        <section id="experience" className="py-32 border-t border-border px-8">
             <div className="lg:ml-80 space-y-12">
                 <SectionHeader title="Work Experience" />
                 {experiences.map((exp, index) => (

@@ -23,7 +23,7 @@ export function About() {
     }, []);
 
     return (
-        <section id="about" className="py-32 border-t border-border ">
+        <section id="about" className="py-32 border-t border-border px-8">
             <div className="lg:ml-80">
                 <SectionHeader title="About Me" />
                 {loading ? <Loading message="Loading about me" /> : null}
