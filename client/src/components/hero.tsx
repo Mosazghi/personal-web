@@ -1,21 +1,18 @@
 "use client";
 
-import { cn } from "~/lib/cn-merge";
 import { ArrowDown } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { getHero } from "~/sanity/queries";
 import { Button } from "./ui/button";
 
-const titles = [
-    "Software Developer",
-    "Electronics Engineer",
-    "Master's Student in Cybernetics & Robotics",
-    "Embedded Systems Enthusiast",
-] as const;
+// titles will be loaded from Sanity
 
 export function Hero() {
     const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
     const [displayText, setDisplayText] = useState("");
+    const [titles, setTitles] = useState<string[]>([]);
+    const [displayName, setDisplayName] = useState<string>("Mosazghi Y. Tesfazghi");
     const [isDeleting, setIsDeleting] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -63,8 +60,8 @@ export function Hero() {
                         scaleMobile: 1.0,
                         color: 0x0,
                         shininess: 20.0,
-                        waveHeight: 1.5,
-                        waveSpeed: 1.3,
+                        waveHeight: 2,
+                        waveSpeed: 2,
                         zoom: 1.23,
                     });
                     setIsLoading(false);
@@ -86,7 +83,7 @@ export function Hero() {
     }, []);
 
     useEffect(() => {
-        const currentTitle = titles[currentTitleIndex];
+        const currentTitle = titles[currentTitleIndex] || "";
         const typingSpeed = isDeleting ? 50 : 100;
         const pauseTime = isDeleting ? 500 : 2000;
 
@@ -108,15 +105,24 @@ export function Hero() {
         return () => clearTimeout(timeout);
     }, [displayText, isDeleting, currentTitleIndex]);
 
+    useEffect(() => {
+        let mounted = true;
+        getHero().then((data) => {
+            if (!mounted) return;
+            if (data?.titles && data.titles.length) setTitles(data.titles);
+            if (data?.name) setDisplayName(data.name);
+        });
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
     return (
         <section className="min-h-screen  w-screen flex items-center justify-center relative" ref={vantaRef}>
             <div className="flex flex-col justify-items-center h-full relative z-10 pointer-events-none">
-                <Link
-                    href="/admin/login"
-                    className="text-sm text-muted-foreground mb-4 inline-block pointer-events-auto"
-                >
+                <Link href="#" className="text-sm text-muted-foreground mb-4 inline-block pointer-events-auto">
                     <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-balance text-white drop-shadow-md">
-                        Mosazghi Y. Tesfazghi
+                        {displayName}
                     </h1>
                 </Link>
 
