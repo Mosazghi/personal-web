@@ -62,7 +62,7 @@ export async function getSkills() {
 
 export async function getProjects() {
     const data = await client.fetch(
-        '*[_type == "project"]{name,slug,description,showcaseLinkGif,showcaseLinkMp4,repositoryLink,previewLink,techStack,startDate,endDate}'
+        '*[_type == "project"] | order(startDate desc){name,slug,description,showcaseLinkGif,showcaseLinkMp4,repositoryLink,previewLink,techStack,startDate,endDate}'
     );
     return (data || []).map((p: any) => ({
         name: p.name,
