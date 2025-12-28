@@ -1,9 +1,8 @@
 "use client";
 import { ArrowUpRightSquare } from "lucide-react";
 import { useEffect, useState } from "react";
+import { getProjects } from "~/sanity/queries";
 import isMobileDevice from "~/utils/isMobileDevice";
-import { apiFetch } from "../../utils/fetch";
-import getApiPath from "../../utils/getApiPath";
 import { SectionHeader } from "../section-header";
 import { Skeleton } from "../ui/skeleton";
 import { Project, ProjectProps } from "./project";
@@ -15,18 +14,21 @@ const ProjectList = () => {
     const isMobile = isMobileDevice();
 
     useEffect(() => {
-        const config = {
-            method: "GET",
-            url: getApiPath() + (process.env.NEXT_PUBLIC_PROJECTS_URL || ""),
-        };
-
+        let mounted = true;
         setLoading(true);
-        apiFetch(config)
-            .then((response) => response)
-            .then((data) => {
-                setProjects(data);
+        getProjects()
+            .then((data: ProjectProps[]) => {
+                const sortedData = data.sort((a, b) => {
+                    const dateA = new Date(a.startDate).getTime();
+                    const dateB = new Date(b.startDate).getTime();
+                    return dateB - dateA;
+                });
+                if (mounted) setProjects(sortedData);
             })
-            .finally(() => setLoading(false));
+            .finally(() => mounted && setLoading(false));
+        return () => {
+            mounted = false;
+        };
     }, []);
 
     return (

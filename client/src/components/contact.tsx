@@ -3,7 +3,7 @@ import { SectionHeader } from "./section-header";
 
 export function Contact() {
     return (
-        <section id="contact" className="py-32 border-t border-border ">
+        <section id="contact" className="py-32 border-t border-border px-8">
             <div className="lg:ml-80">
                 <SectionHeader title="Contact" />
                 <div className="max-w-3xl">
