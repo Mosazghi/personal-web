@@ -71,12 +71,6 @@ export const Project = ({
             <div className={`${index % 2 === 1 ? "lg:order-1" : ""}`}>
                 <div className="flex items-center gap-2 mb-2 justify-between flex-wrap">
                     <h3 className="text-2xl font-bold mb-4">{name}</h3>
-                    <div className="items-center gap-4 mb-4 flex opacity-0 group-hover:opacity-100 transition-opacity transform  duration-500 ease-out">
-                        <span className="text-[11px] font-mono text-muted-foreground">
-                            {new Date(startDate).toLocaleDateString()} -{" "}
-                            {endDate ? new Date(endDate).toLocaleDateString() : "Present"}
-                        </span>
-                    </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mb-6 text-pretty">{description}</p>
                 <div className="flex flex-wrap gap-2 mb-6">
