@@ -22,8 +22,7 @@ export interface ProjectProps {
     repositoryLink: string;
     previewLink: string;
     isMobile?: boolean;
-    startDate: string;
-    endDate?: string;
+    hide: boolean;
     techStack: string[];
 }
 export const Project = ({
@@ -35,10 +34,9 @@ export const Project = ({
     showcaseLinkGif,
     previewLink,
     techStack,
-    startDate,
-    endDate,
 }: ProjectProps) => {
     const [mediaErr, setMediaErr] = useState(false);
+
     return (
         <div key={index} className="group grid lg:grid-cols-2 gap-8 items-center">
             <div className={`${index % 2 === 1 ? "lg:order-2" : ""}`}>

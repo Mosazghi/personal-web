@@ -18,8 +18,9 @@ const ProjectList = () => {
         setLoading(true);
         getProjects()
             .then((data: ProjectProps[]) => {
-                console.log("First elem", data[0].name);
-                if (mounted) setProjects(data);
+                if (mounted) {
+                    setProjects(data);
+                }
             })
             .finally(() => mounted && setLoading(false));
         return () => {
@@ -35,9 +36,11 @@ const ProjectList = () => {
                     Array.from({ length: 3 }).map((_, index) => <LoadingProjectsSkeleton index={index} key={index} />)}
                 {!loading && projects.length === 0 && <NoProjects />}
                 {projects.length > 0 &&
-                    projects.map((project, index) => (
-                        <Project {...project} index={index} isMobile={isMobile} key={project.name} />
-                    ))}
+                    projects
+                        .filter((p) => !p.hide)
+                        .map((project, index) => (
+                            <Project {...project} index={index} isMobile={isMobile} key={project.name} />
+                        ))}
             </div>
         </section>
     );

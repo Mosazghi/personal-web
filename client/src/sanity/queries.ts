@@ -62,7 +62,7 @@ export async function getSkills() {
 
 export async function getProjects() {
     const data = await client.fetch(
-        '*[_type == "project"] | order(startDate desc){name,slug,description,showcaseLinkGif,showcaseLinkMp4,repositoryLink,previewLink,techStack,startDate,endDate}'
+        '*[_type == "project"] | order(startDate desc){name,slug,description,showcaseLinkGif,showcaseLinkMp4,repositoryLink,previewLink,techStack,startDate,hide}'
     );
     return (data || []).map((p: any) => ({
         name: p.name,
@@ -73,6 +73,6 @@ export async function getProjects() {
         previewLink: p.previewLink || "",
         techStack: p.techStack || [],
         startDate: p.startDate || "",
-        endDate: p.endDate || "",
+        hide: p.hide || false,
     }));
 }

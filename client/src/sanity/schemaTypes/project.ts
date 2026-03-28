@@ -35,6 +35,6 @@ export default defineType({
         },
 
         { name: "startDate", title: "Start Date", type: "date" },
-        { name: "endDate", title: "End Date", type: "date" },
+        { name: "hide", title: "Hide in portfolio", type: "boolean" },
     ],
 });
