@@ -1,10 +1,10 @@
-import type React from "react";
-import { Suspense } from "react";
+import type React from 'react';
+import { Suspense } from 'react';
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return <Suspense fallback={null}>{children}</Suspense>;
+  return <Suspense fallback={null}>{children}</Suspense>;
 }

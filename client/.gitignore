@@ -28,3 +28,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# TypeScript incremental build cache
+*.tsbuildinfo

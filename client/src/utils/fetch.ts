@@ -1,33 +1,38 @@
 interface apiFetchProps {
-    url: string;
-    method: string | "GET" | "POST" | "DELETE" | "PUT";
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data?: Record<string, any>;
-    headers?: Record<string, string>;
+  url: string;
+  method: string | 'GET' | 'POST' | 'DELETE' | 'PUT';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: Record<string, unknown>;
+  headers?: Record<string, string>;
 }
 
-export const apiFetch = async ({ url, method, data, headers }: apiFetchProps) => {
-    const defaultHeaders = {
-        "Content-Type": "application/json",
-    };
+export const apiFetch = async ({
+  url,
+  method,
+  data,
+  headers,
+}: apiFetchProps) => {
+  const defaultHeaders = {
+    'Content-Type': 'application/json',
+  };
 
-    try {
-        const response = await fetch(url, {
-            method,
-            body: data ? JSON.stringify(data) : undefined,
-            headers: { ...defaultHeaders, ...headers },
-        });
+  try {
+    const response = await fetch(url, {
+      method,
+      body: data ? JSON.stringify(data) : undefined,
+      headers: { ...defaultHeaders, ...headers },
+    });
 
-        if (response.ok) {
-            if (method === "DELETE") {
-                return true;
-            } else {
-                return await response.json();
-            }
-        } else {
-            throw new Error(`Failed to ${method} data`);
-        }
-    } catch (e) {
-        return false;
+    if (response.ok) {
+      if (method === 'DELETE') {
+        return true;
+      } else {
+        return await response.json();
+      }
+    } else {
+      throw new Error(`Failed to ${method} data`);
     }
+  } catch (e) {
+    return false;
+  }
 };
