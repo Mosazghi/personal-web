@@ -1,7 +1,7 @@
 'use client';
-import { ImageOff, MoveRight } from 'lucide-react';
-import { PortableText } from 'next-sanity';
+import { Github, ImageOff, MoveRight } from 'lucide-react';
 import Image from 'next/image';
+import { PortableText } from 'next-sanity';
 import { useState } from 'react';
 import type { TypedObject } from 'sanity';
 import { customComponents } from '~/custom-components';
@@ -28,6 +28,7 @@ export const Project = ({
   description,
   showcaseLinkMp4,
   showcaseLinkGif,
+  repositoryLink,
   previewLink,
   techStack,
 }: ProjectProps) => {
@@ -45,7 +46,7 @@ export const Project = ({
               height={360}
               className="w-full h-full group-hover:scale-105 transition-transform duration-500"
               onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
-              src={showcaseLinkGif}
+              src={showcaseLinkGif ?? null}
               alt={`Screenshot of the ${name} project`}
               loading={index === 0 ? 'eager' : 'lazy'}
               onError={() => setMediaErr(true)}
@@ -87,15 +88,26 @@ export const Project = ({
             </span>
           ))}
         </div>
-        <a
-          href={previewLink}
-          className="inline-flex items-center gap-2 text-sm text-primary hover:gap-3 opacity-0 group-hover:opacity-100 transition-opacity transform duration-500 ease-out"
-          target="_blank"
-          rel="noopener"
-        >
-          View Project
-          <MoveRight className="size-4" />
-        </a>
+        <div className="flex items-center gap-10">
+          <a
+            href={repositoryLink}
+            className="inline-flex items-center hover:text-blue-100 gap-2 text-sm text-primary hover:gap-3 opacity-0 group-hover:opacity-100 transition-opacity transform duration-500 ease-out"
+            target="_blank"
+            rel="noopener"
+          >
+            View Repository
+            <MoveRight className="size-4" />
+          </a>
+          <a
+            href={previewLink}
+            className="inline-flex items-center hover:text-blue-100  gap-2 text-sm text-primary hover:gap-3 opacity-0 group-hover:opacity-100 transition-opacity transform duration-500 ease-out"
+            target="_blank"
+            rel="noopener"
+          >
+            View Project
+            <MoveRight className="size-4" />
+          </a>
+        </div>
       </div>
     </article>
   );

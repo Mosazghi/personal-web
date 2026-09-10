@@ -9,12 +9,14 @@ const ProjectList = async () => {
 
   return (
     <section id="projects" className="py-32 border-t border-border px-8">
-      <div className="lg:ml-80 grid gap-12">
+      <div className="lg:ml-80">
         <SectionHeader title="Featured Projects" />
-        {visible.length === 0 && <NoProjects />}
-        {visible.map((project, index) => (
-          <Project {...project} index={index} key={project.name} />
-        ))}
+        <div className="grid gap-20">
+          {visible.length === 0 && <NoProjects />}
+          {visible.map((project, index) => (
+            <Project {...project} index={index} key={project.name} />
+          ))}
+        </div>
       </div>
     </section>
   );
