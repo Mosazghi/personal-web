@@ -1,7 +1,7 @@
 'use client';
 import { PopoverContent } from '@radix-ui/react-popover';
 import { Menu, Moon, Sun, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { contactLinks } from '~/data';
 import { Button } from './ui/button';
 import { Popover, PopoverTrigger } from './ui/popover';
@@ -18,6 +18,9 @@ const sections = [
 export const Navigation = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const prevScrollPos = useRef(window.pageYOffset);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -38,7 +41,20 @@ export const Navigation = () => {
       if (element) observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      setIsVisible(
+        prevScrollPos.current > currentScrollPos || currentScrollPos < 10,
+      );
+      prevScrollPos.current = currentScrollPos;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const scrollToSection = (id: string) => {
@@ -49,8 +65,10 @@ export const Navigation = () => {
   };
 
   return (
-    <>
-      <nav className="hidden lg:flex fixed left-0 top-0 h-screen w-64 flex-col justify-between p-8 border-r border-border z-50">
+    <aside>
+      <nav
+        className={`hidden lg:flex fixed left-0 top-0 h-screen w-64 flex-col justify-between p-8 border-r border-border z-50 ${isVisible ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-600 ease-out`}
+      >
         <div>
           <ul className="space-y-3">
             {sections.map((item) => (
@@ -120,6 +138,7 @@ export const Navigation = () => {
               {sections.map((item) => (
                 <li key={item.raw}>
                   <button
+                    type="button"
                     onClick={() => scrollToSection(item.raw)}
                     className={`text-sm ${
                       activeSection === item.raw
@@ -135,6 +154,6 @@ export const Navigation = () => {
           </div>
         )}
       </nav>
-    </>
+    </aside>
   );
 };
