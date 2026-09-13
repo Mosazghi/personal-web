@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata, Viewport } from 'next';
 import { personName, siteDescription, siteName, siteUrl } from '~/lib/site';
 import './globals.css';
@@ -72,7 +73,11 @@ export const viewport: Viewport = {
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        {children}
+
+        <Analytics />
+      </body>
     </html>
   );
 }
