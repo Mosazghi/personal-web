@@ -1,3 +1,4 @@
+import { orderRankField } from '@sanity/orderable-document-list';
 import { defineType } from 'sanity';
 
 export default defineType({
@@ -5,6 +6,7 @@ export default defineType({
   title: 'Project',
   type: 'document',
   fields: [
+    orderRankField({ type: 'project' }),
     {
       name: 'name',
       title: 'Name',
