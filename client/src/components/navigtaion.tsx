@@ -19,9 +19,11 @@ export const Navigation = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const prevScrollPos = useRef(window.pageYOffset);
+  const prevScrollPos = useRef(0);
 
   useEffect(() => {
+    prevScrollPos.current = window.pageYOffset;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
